@@ -1,9 +1,12 @@
 import useAuth from '../../hooks/useAuth'
 import useCart from '../../hooks/useCart'
+import useProducts from '../../hooks/useProducts'
 
 export default function Navbar() {
   const { user, isAdmin, signOut } = useAuth()
   const { totalItems } = useCart()
+  const { categories } = useProducts()
+  const navCategories = categories.slice(0, 4)
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
@@ -17,10 +20,9 @@ export default function Navbar() {
 
           {/* 導覽連結 - 桌面版 */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <a className="hover:text-primary transition-colors" href="/products?category=steam">Steam</a>
-            <a className="hover:text-primary transition-colors" href="/products?category=playstation">PSN</a>
-            <a className="hover:text-primary transition-colors" href="/products?category=mobile">手遊點數</a>
-            <a className="hover:text-primary transition-colors" href="/products?category=gift-card">禮物卡</a>
+            {navCategories.map((cat) => (
+              <a key={cat.id} className="hover:text-primary transition-colors" href={`/products?category=${cat.slug}`}>{cat.name}</a>
+            ))}
           </nav>
 
           {/* 搜尋欄 */}
