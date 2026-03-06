@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
-import { RequireAuth, RequireAdmin } from './components/auth/RequireAuth'
+import { RequireAuth } from './components/auth/RequireAuth'
 import AdminLayout from './components/layout/AdminLayout'
 import Home from './pages/Home'
 import ProductList from './pages/ProductList'
@@ -20,7 +20,6 @@ import Dashboard from './pages/member/Dashboard'
 import PurchaseHistory from './pages/member/PurchaseHistory'
 import AccountSettings from './pages/member/AccountSettings'
 import Security from './pages/member/Security'
-import AdminLogin from './pages/admin/AdminLogin'
 import Inventory from './pages/admin/Inventory'
 import Settings from './pages/admin/Settings'
 
@@ -51,8 +50,8 @@ export default function App() {
         <Route path="/member/security" element={<RequireAuth><Security /></RequireAuth>} />
 
         {/* 後台頁面 */}
-        <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={null} />
           <Route path="inventory" element={<Inventory />} />
           <Route path="settings" element={<Settings />} />
         </Route>

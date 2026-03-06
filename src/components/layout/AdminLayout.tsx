@@ -1,7 +1,17 @@
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Link, Outlet, Navigate, useLocation } from 'react-router-dom'
+import useAuth from '../../hooks/useAuth'
+import AdminLogin from '../../pages/admin/AdminLogin'
+import LoadingSpinner from '../ui/LoadingSpinner'
 
 export default function AdminLayout() {
+  const { user, isAdmin, loading } = useAuth()
   const { pathname } = useLocation()
+
+  if (loading) return <LoadingSpinner />
+  if (!user || !isAdmin) return <AdminLogin />
+
+  // /admin 精確匹配時導向庫存管理
+  if (pathname === '/admin') return <Navigate to="/admin/inventory" replace />
 
   return (
     <div className="min-h-screen">
