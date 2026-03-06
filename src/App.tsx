@@ -10,6 +10,9 @@ import Login from './pages/Login'
 import FAQ from './pages/FAQ'
 import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
+import About from './pages/About'
+import Contact from './pages/Contact'
+import Refund from './pages/Refund'
 import NotFound from './pages/NotFound'
 import Dashboard from './pages/member/Dashboard'
 import PurchaseHistory from './pages/member/PurchaseHistory'
@@ -33,6 +36,9 @@ export default function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/refund" element={<Refund />} />
 
         {/* 會員頁面（需登入） */}
         <Route path="/member" element={<RequireAuth><Dashboard /></RequireAuth>} />

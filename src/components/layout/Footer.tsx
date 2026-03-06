@@ -20,8 +20,8 @@ export default function Footer() {
           <div>
             <h4 className="font-bold mb-6">公司資訊</h4>
             <ul className="space-y-4 text-sm text-slate-500 dark:text-slate-400">
-              <li><Link className="hover:text-primary transition-colors" to="#">關於我們</Link></li>
-              <li><Link className="hover:text-primary transition-colors" to="#">聯絡我們</Link></li>
+              <li><Link className="hover:text-primary transition-colors" to="/about">關於我們</Link></li>
+              <li><Link className="hover:text-primary transition-colors" to="/contact">聯絡我們</Link></li>
             </ul>
           </div>
 
@@ -32,7 +32,7 @@ export default function Footer() {
               <li><Link className="hover:text-primary transition-colors" to="/faq">常見問題</Link></li>
               <li><Link className="hover:text-primary transition-colors" to="/terms">服務條款</Link></li>
               <li><Link className="hover:text-primary transition-colors" to="/privacy">隱私權政策</Link></li>
-              <li><Link className="hover:text-primary transition-colors" to="#">退款政策</Link></li>
+              <li><Link className="hover:text-primary transition-colors" to="/refund">退款政策</Link></li>
             </ul>
           </div>
 
