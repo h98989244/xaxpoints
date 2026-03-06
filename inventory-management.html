@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-Hant"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>遊戲點卡商城 - 庫存管理系統</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#256af4",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-3xl">token</span>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold tracking-tight">庫存管理系統</h2>
+</div>
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="pl-10 pr-4 py-2 w-72 bg-slate-100 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm placeholder-slate-400" placeholder="搜尋商品名稱或編號..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:border-slate-800 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-semibold">管理員</p>
+<p class="text-xs text-slate-500">系統權限</p>
+</div>
+<div class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 overflow-hidden" data-alt="User profile avatar placeholder">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark p-6 space-y-8 hidden lg:block">
+<nav class="space-y-1">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">主菜單</p>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium">儀表板總覽</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-medium">商品管理</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-all" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-medium">訂單記錄</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-medium">營收分析</span>
+</a>
+</nav>
+<nav class="space-y-1">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">系統管理</p>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-medium">會員管理</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-all" href="#">
+<span class="material-symbols-outlined">tune</span>
+<span class="font-medium">平台設定</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 p-6 lg:p-10 max-w-7xl mx-auto w-full">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+<div>
+<h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100">商品庫存管理</h1>
+<p class="text-slate-500 mt-1">管理店內所有遊戲點卡、面額以及庫存狀態</p>
+</div>
+<button class="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-primary/25">
+<span class="material-symbols-outlined">add</span>
+                    新增商品
+                </button>
+</div>
+<!-- Stats Overview (Small Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
+<div class="flex items-center justify-between">
+<span class="text-slate-500 text-sm font-medium">總上架商品</span>
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">grid_view</span>
+</div>
+<p class="text-2xl font-bold mt-2">1,284</p>
+<p class="text-xs text-green-500 mt-1">↑ 12% 較上月增加</p>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
+<div class="flex items-center justify-between">
+<span class="text-slate-500 text-sm font-medium">低庫存警告</span>
+<span class="material-symbols-outlined text-amber-500 bg-amber-500/10 p-2 rounded-lg">warning</span>
+</div>
+<p class="text-2xl font-bold mt-2">18</p>
+<p class="text-xs text-slate-500 mt-1">需立即補貨商品</p>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
+<div class="flex items-center justify-between">
+<span class="text-slate-500 text-sm font-medium">今日成交額</span>
+<span class="material-symbols-outlined text-emerald-500 bg-emerald-500/10 p-2 rounded-lg">payments</span>
+</div>
+<p class="text-2xl font-bold mt-2">$42,950</p>
+<p class="text-xs text-green-500 mt-1">↑ 5% 穩定成長中</p>
+</div>
+</div>
+<!-- Filters and Table Container -->
+<div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+<!-- Toolbar/Filters -->
+<div class="p-6 border-b border-slate-200 dark:border-slate-700 flex flex-wrap items-center gap-4">
+<div class="flex-1 min-w-[200px]">
+<div class="flex bg-slate-100 dark:bg-background-dark p-1 rounded-lg w-fit">
+<button class="px-4 py-1.5 rounded-md text-sm font-medium bg-white dark:bg-slate-700 shadow-sm">全部商品</button>
+<button class="px-4 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">上架中</button>
+<button class="px-4 py-1.5 rounded-md text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">已下架</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<select class="bg-slate-50 dark:bg-background-dark border-slate-200 dark:border-slate-700 rounded-lg text-sm py-2 pl-3 pr-10 focus:ring-primary">
+<option>所有平台</option>
+<option>PlayStation</option>
+<option>Nintendo Switch</option>
+<option>Xbox</option>
+<option>Steam</option>
+</select>
+<select class="bg-slate-50 dark:bg-background-dark border-slate-200 dark:border-slate-700 rounded-lg text-sm py-2 pl-3 pr-10 focus:ring-primary">
+<option>排序方式</option>
+<option>價格由高到低</option>
+<option>價格由低到高</option>
+<option>庫存剩餘少到多</option>
+</select>
+<button class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Table Content -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50/50 dark:bg-slate-700/30 text-slate-500 dark:text-slate-400 text-xs uppercase font-bold">
+<th class="px-6 py-4">商品名稱</th>
+<th class="px-6 py-4">平台</th>
+<th class="px-6 py-4">售價 (TWD)</th>
+<th class="px-6 py-4">庫存狀態</th>
+<th class="px-6 py-4">狀態</th>
+<th class="px-6 py-4 text-right">操作</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/20 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center" data-alt="PlayStation Plus logo placeholder">
+<span class="material-symbols-outlined text-blue-600 dark:text-blue-400">sports_esports</span>
+</div>
+<div>
+<p class="font-semibold text-slate-900 dark:text-slate-100">PlayStation Plus 12個月</p>
+<p class="text-xs text-slate-500">ID: PS-12M-PLUS</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-xs font-bold rounded">PlayStation</span>
+</td>
+<td class="px-6 py-4 font-medium">$2,188</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-24 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full w-[85%]"></div>
+</div>
+<span class="text-xs font-medium">850 份</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-emerald-500 text-sm font-medium">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                        上架中
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/20 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center" data-alt="Nintendo Eshop card placeholder">
+<span class="material-symbols-outlined text-red-600 dark:text-red-400">confirmation_number</span>
+</div>
+<div>
+<p class="font-semibold text-slate-900 dark:text-slate-100">Nintendo Eshop 1000円</p>
+<p class="text-xs text-slate-500">ID: NS-1000-JP</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 text-xs font-bold rounded">Nintendo</span>
+</td>
+<td class="px-6 py-4 font-medium">$245</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-24 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="bg-amber-500 h-full w-[12%]"></div>
+</div>
+<span class="text-xs font-medium text-amber-500">12 份</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-emerald-500 text-sm font-medium">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                        上架中
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/20 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center" data-alt="Steam Wallet card placeholder">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">account_balance_wallet</span>
+</div>
+<div>
+<p class="font-semibold text-slate-900 dark:text-slate-100">Steam 蒸氣卡 $50 USD</p>
+<p class="text-xs text-slate-500">ID: ST-50-USD</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold rounded">Steam</span>
+</td>
+<td class="px-6 py-4 font-medium">$1,650</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-24 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="bg-slate-400 h-full w-0"></div>
+</div>
+<span class="text-xs font-medium text-slate-400">缺貨中</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-slate-400 text-sm font-medium">
+<span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                        已下架
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/20 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center" data-alt="Xbox Game Pass placeholder">
+<span class="material-symbols-outlined text-green-600 dark:text-green-400">videogame_asset</span>
+</div>
+<div>
+<p class="font-semibold text-slate-900 dark:text-slate-100">Xbox Game Pass Ultimate</p>
+<p class="text-xs text-slate-500">ID: XB-GPU-3M</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 text-xs font-bold rounded">Xbox</span>
+</td>
+<td class="px-6 py-4 font-medium">$1,199</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-24 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full w-[45%]"></div>
+</div>
+<span class="text-xs font-medium">124 份</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-emerald-500 text-sm font-medium">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                        上架中
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-6 border-t border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+<p class="text-sm text-slate-500">顯示 1 到 4 筆，共 1,284 筆商品</p>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">3</button>
+<span class="px-2 text-slate-400">...</span>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">12</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>
