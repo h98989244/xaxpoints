@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import useCart from '../../hooks/useCart'
 
@@ -11,17 +10,17 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 shrink-0">
+          <a href="/" className="flex items-center gap-2 shrink-0">
             <span className="material-symbols-outlined text-primary text-3xl">sports_esports</span>
             <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">GameCredit 遊戲點數</span>
-          </Link>
+          </a>
 
           {/* 導覽連結 - 桌面版 */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <Link className="hover:text-primary transition-colors" to="/products?category=steam">Steam</Link>
-            <Link className="hover:text-primary transition-colors" to="/products?category=playstation">PSN</Link>
-            <Link className="hover:text-primary transition-colors" to="/products?category=mobile">手遊點數</Link>
-            <Link className="hover:text-primary transition-colors" to="/products?category=gift-card">禮物卡</Link>
+            <a className="hover:text-primary transition-colors" href="/products?category=steam">Steam</a>
+            <a className="hover:text-primary transition-colors" href="/products?category=playstation">PSN</a>
+            <a className="hover:text-primary transition-colors" href="/products?category=mobile">手遊點數</a>
+            <a className="hover:text-primary transition-colors" href="/products?category=gift-card">禮物卡</a>
           </nav>
 
           {/* 搜尋欄 */}
@@ -38,24 +37,24 @@ export default function Navbar() {
 
           {/* 操作按鈕 */}
           <div className="flex items-center gap-2">
-            <Link to="/cart" className="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors relative">
+            <button onClick={() => { window.location.href = '/cart' }} className="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors relative">
               <span className="material-symbols-outlined">shopping_cart</span>
               {totalItems > 0 && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-xs rounded-full flex items-center justify-center font-bold">
                   {totalItems}
                 </span>
               )}
-            </Link>
+            </button>
             {user ? (
               <>
                 {isAdmin && (
-                  <Link to="/admin/inventory" className="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors" title="後台管理">
+                  <button onClick={() => { window.location.href = '/admin/inventory' }} className="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors" title="後台管理">
                     <span className="material-symbols-outlined text-primary">admin_panel_settings</span>
-                  </Link>
+                  </button>
                 )}
-                <Link to="/member" className="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                <button onClick={() => { window.location.href = '/member' }} className="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors">
                   <span className="material-symbols-outlined">person</span>
-                </Link>
+                </button>
                 <button
                   onClick={signOut}
                   className="hidden sm:flex bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 px-4 py-2 rounded-lg text-sm font-bold transition-colors"
@@ -64,12 +63,12 @@ export default function Navbar() {
                 </button>
               </>
             ) : (
-              <Link
-                to="/login"
+              <a
+                href="/login"
                 className="hidden sm:flex bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors"
               >
                 登入
-              </Link>
+              </a>
             )}
           </div>
         </div>
