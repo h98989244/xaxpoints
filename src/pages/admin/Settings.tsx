@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import LoadingSpinner from '../../components/ui/LoadingSpinner'
 import useSiteSettings from '../../hooks/useSiteSettings'
 
@@ -43,21 +42,6 @@ export default function Settings() {
   }
 
   return (
-    <div className="min-h-screen">
-      <header className="h-16 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 bg-white dark:bg-slate-900 sticky top-0 z-10">
-        <div className="flex items-center gap-4">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary text-2xl">sports_esports</span>
-            <span className="font-bold">GameCredit 後台</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-6 ml-8 text-sm font-medium">
-            <Link to="/admin/inventory" className="hover:text-primary transition-colors">庫存管理</Link>
-            <Link to="/admin/settings" className="text-primary">網站設定</Link>
-          </nav>
-        </div>
-        <Link to="/" className="text-sm text-slate-500 hover:text-primary">返回前台</Link>
-      </header>
-
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-bold mb-2">網站設定</h1>
         <p className="text-slate-500 mb-8">管理網站基本資訊</p>
@@ -112,6 +96,5 @@ export default function Settings() {
           </div>
         )}
       </main>
-    </div>
   )
 }

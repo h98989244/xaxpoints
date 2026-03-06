@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { RequireAuth, RequireAdmin } from './components/auth/RequireAuth'
+import AdminLayout from './components/layout/AdminLayout'
 import Home from './pages/Home'
 import ProductList from './pages/ProductList'
 import ProductDetail from './pages/ProductDetail'
@@ -51,8 +52,10 @@ export default function App() {
 
         {/* 後台頁面 */}
         <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/inventory" element={<RequireAdmin><Inventory /></RequireAdmin>} />
-        <Route path="/admin/settings" element={<RequireAdmin><Settings /></RequireAdmin>} />
+        <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
+          <Route path="inventory" element={<Inventory />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
 
         {/* 404 */}
         <Route path="*" element={<NotFound />} />
