@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { RequireAuth, RequireAdmin } from './components/auth/RequireAuth'
 import Home from './pages/Home'
 import ProductList from './pages/ProductList'
 import ProductDetail from './pages/ProductDetail'
@@ -33,15 +34,15 @@ export default function App() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
 
-        {/* 會員頁面 */}
-        <Route path="/member" element={<Dashboard />} />
-        <Route path="/member/history" element={<PurchaseHistory />} />
-        <Route path="/member/settings" element={<AccountSettings />} />
-        <Route path="/member/security" element={<Security />} />
+        {/* 會員頁面（需登入） */}
+        <Route path="/member" element={<RequireAuth><Dashboard /></RequireAuth>} />
+        <Route path="/member/history" element={<RequireAuth><PurchaseHistory /></RequireAuth>} />
+        <Route path="/member/settings" element={<RequireAuth><AccountSettings /></RequireAuth>} />
+        <Route path="/member/security" element={<RequireAuth><Security /></RequireAuth>} />
 
-        {/* 後台頁面 */}
-        <Route path="/admin/inventory" element={<Inventory />} />
-        <Route path="/admin/settings" element={<Settings />} />
+        {/* 後台頁面（需 Admin） */}
+        <Route path="/admin/inventory" element={<RequireAdmin><Inventory /></RequireAdmin>} />
+        <Route path="/admin/settings" element={<RequireAdmin><Settings /></RequireAdmin>} />
 
         {/* 404 */}
         <Route path="*" element={<NotFound />} />
