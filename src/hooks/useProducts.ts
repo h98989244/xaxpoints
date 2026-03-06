@@ -8,11 +8,16 @@ export default function useProducts() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false)
+      return
+    }
     fetchProducts()
     fetchCategories()
   }, [])
 
   async function fetchProducts() {
+    if (!supabase) return
     const { data } = await supabase
       .from('products')
       .select('*')
@@ -23,6 +28,7 @@ export default function useProducts() {
   }
 
   async function fetchCategories() {
+    if (!supabase) return
     const { data } = await supabase
       .from('categories')
       .select('*')
@@ -32,6 +38,7 @@ export default function useProducts() {
   }
 
   async function fetchProductById(id: string) {
+    if (!supabase) return null
     const { data } = await supabase
       .from('products')
       .select('*')
@@ -41,6 +48,7 @@ export default function useProducts() {
   }
 
   async function fetchProductsByCategory(categorySlug: string) {
+    if (!supabase) return []
     const { data } = await supabase
       .from('products')
       .select('*, categories!inner(slug)')

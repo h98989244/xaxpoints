@@ -9,6 +9,11 @@ export default function useAuth() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false)
+      return
+    }
+
     // 取得目前登入狀態
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
@@ -34,6 +39,7 @@ export default function useAuth() {
   }, [])
 
   async function fetchProfile(userId: string) {
+    if (!supabase) return
     const { data } = await supabase
       .from('profiles')
       .select('*')
@@ -44,11 +50,13 @@ export default function useAuth() {
   }
 
   async function signInWithEmail(email: string, password: string) {
+    if (!supabase) return { error: new Error('Supabase 尚未設定') as unknown as import('@supabase/supabase-js').AuthError }
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     return { error }
   }
 
   async function signUpWithEmail(email: string, password: string, displayName: string) {
+    if (!supabase) return { error: new Error('Supabase 尚未設定') as unknown as import('@supabase/supabase-js').AuthError }
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -58,6 +66,7 @@ export default function useAuth() {
   }
 
   async function signOut() {
+    if (!supabase) return
     await supabase.auth.signOut()
     setUser(null)
     setProfile(null)
