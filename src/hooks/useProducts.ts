@@ -67,13 +67,26 @@ export default function useProducts() {
     sortBy?: string
   }) => {
     if (!supabase) return []
+
+    // 先用 slug 查出 category_id
+    let categoryId: string | undefined
+    if (params.categorySlug && params.categorySlug !== 'all') {
+      const { data: cat } = await supabase
+        .from('categories')
+        .select('id')
+        .eq('slug', params.categorySlug)
+        .single()
+      if (cat) categoryId = cat.id
+      else return [] // slug 不存在，直接回空
+    }
+
     let query = supabase
       .from('products')
       .select('*, categories(slug, name)')
       .eq('is_active', true)
 
-    if (params.categorySlug && params.categorySlug !== 'all') {
-      query = query.eq('categories.slug', params.categorySlug)
+    if (categoryId) {
+      query = query.eq('category_id', categoryId)
     }
     if (params.minPrice !== undefined) {
       query = query.gte('price', params.minPrice)
