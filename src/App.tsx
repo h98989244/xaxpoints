@@ -1,5 +1,4 @@
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
-import { AuthProvider } from './contexts/AuthContext'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { RequireAuth } from './components/auth/RequireAuth'
 import AdminLayout from './components/layout/AdminLayout'
 import Home from './pages/Home'
@@ -23,50 +22,39 @@ import Security from './pages/member/Security'
 import Inventory from './pages/admin/Inventory'
 import Settings from './pages/admin/Settings'
 
-function RootLayout() {
-  return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
-  )
-}
-
-const router = createBrowserRouter([
-  {
-    element: <RootLayout />,
-    children: [
-      // 前台頁面
-      { path: '/', element: <Home /> },
-      { path: '/products', element: <ProductList /> },
-      { path: '/products/:id', element: <ProductDetail /> },
-      { path: '/cart', element: <Cart /> },
-      { path: '/checkout', element: <Checkout /> },
-      { path: '/order-complete/:id', element: <OrderComplete /> },
-      { path: '/login', element: <Login /> },
-      { path: '/faq', element: <FAQ /> },
-      { path: '/terms', element: <Terms /> },
-      { path: '/privacy', element: <Privacy /> },
-      { path: '/about', element: <About /> },
-      { path: '/contact', element: <Contact /> },
-      { path: '/refund', element: <Refund /> },
-
-      // 會員頁面
-      { path: '/member', element: <RequireAuth><Dashboard /></RequireAuth> },
-      { path: '/member/history', element: <RequireAuth><PurchaseHistory /></RequireAuth> },
-      { path: '/member/settings', element: <RequireAuth><AccountSettings /></RequireAuth> },
-      { path: '/member/security', element: <RequireAuth><Security /></RequireAuth> },
-
-      // 後台頁面
-      { path: '/admin', element: <AdminLayout><div /></AdminLayout> },
-      { path: '/admin/inventory', element: <AdminLayout><Inventory /></AdminLayout> },
-      { path: '/admin/settings', element: <AdminLayout><Settings /></AdminLayout> },
-
-      // 404
-      { path: '*', element: <NotFound /> },
-    ],
-  },
-])
-
 export default function App() {
-  return <RouterProvider router={router} />
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* 前台頁面 */}
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<ProductList />} />
+        <Route path="/products/:id" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/order-complete/:id" element={<OrderComplete />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/refund" element={<Refund />} />
+
+        {/* 會員頁面（需登入） */}
+        <Route path="/member" element={<RequireAuth><Dashboard /></RequireAuth>} />
+        <Route path="/member/history" element={<RequireAuth><PurchaseHistory /></RequireAuth>} />
+        <Route path="/member/settings" element={<RequireAuth><AccountSettings /></RequireAuth>} />
+        <Route path="/member/security" element={<RequireAuth><Security /></RequireAuth>} />
+
+        {/* 後台頁面 */}
+        <Route path="/admin" element={<AdminLayout><div /></AdminLayout>} />
+        <Route path="/admin/inventory" element={<AdminLayout><Inventory /></AdminLayout>} />
+        <Route path="/admin/settings" element={<AdminLayout><Settings /></AdminLayout>} />
+
+        {/* 404 */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
