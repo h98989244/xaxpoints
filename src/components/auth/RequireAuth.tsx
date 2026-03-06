@@ -17,8 +17,8 @@ export function RequireAdmin({ children }: { children: React.ReactNode }) {
   const { user, isAdmin, loading } = useAuth()
 
   if (loading) return <LoadingSpinner />
-  if (!user) return <Navigate to="/login" replace />
-  if (!isAdmin) return <Navigate to="/" replace />
+  if (!user) return <Navigate to="/admin" replace />
+  if (!isAdmin) return <Navigate to="/admin" replace />
 
   return <>{children}</>
 }

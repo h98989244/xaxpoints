@@ -1,29 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import MemberSidebar from '../../components/layout/MemberSidebar'
 import useAuth from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabase'
-import type { LoginLog } from '../../types'
 
 export default function Security() {
-  const { user } = useAuth()
+  useAuth()
   const [message, setMessage] = useState('')
   const [showPasswordForm, setShowPasswordForm] = useState(false)
   const [passwords, setPasswords] = useState({ newPassword: '', confirmPassword: '' })
-  const [loginLogs, setLoginLogs] = useState<LoginLog[]>([])
-
-  useEffect(() => {
-    if (user && supabase) {
-      supabase
-        .from('login_logs')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(10)
-        .then(({ data }) => {
-          if (data) setLoginLogs(data)
-        })
-    }
-  }, [user])
 
   async function handleChangePassword() {
     if (!supabase) return

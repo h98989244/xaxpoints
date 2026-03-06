@@ -18,6 +18,7 @@ import Dashboard from './pages/member/Dashboard'
 import PurchaseHistory from './pages/member/PurchaseHistory'
 import AccountSettings from './pages/member/AccountSettings'
 import Security from './pages/member/Security'
+import AdminLogin from './pages/admin/AdminLogin'
 import Inventory from './pages/admin/Inventory'
 import Settings from './pages/admin/Settings'
 
@@ -46,7 +47,8 @@ export default function App() {
         <Route path="/member/settings" element={<RequireAuth><AccountSettings /></RequireAuth>} />
         <Route path="/member/security" element={<RequireAuth><Security /></RequireAuth>} />
 
-        {/* 後台頁面（需 Admin） */}
+        {/* 後台頁面 */}
+        <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/inventory" element={<RequireAdmin><Inventory /></RequireAdmin>} />
         <Route path="/admin/settings" element={<RequireAdmin><Settings /></RequireAdmin>} />
 
