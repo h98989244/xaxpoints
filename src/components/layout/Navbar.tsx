@@ -3,7 +3,7 @@ import useAuth from '../../hooks/useAuth'
 import useCart from '../../hooks/useCart'
 
 export default function Navbar() {
-  const { user, signOut } = useAuth()
+  const { user, isAdmin, signOut } = useAuth()
   const { totalItems } = useCart()
 
   return (
@@ -48,6 +48,11 @@ export default function Navbar() {
             </Link>
             {user ? (
               <>
+                {isAdmin && (
+                  <Link to="/admin/inventory" className="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors" title="後台管理">
+                    <span className="material-symbols-outlined text-primary">admin_panel_settings</span>
+                  </Link>
+                )}
                 <Link to="/member" className="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors">
                   <span className="material-symbols-outlined">person</span>
                 </Link>
