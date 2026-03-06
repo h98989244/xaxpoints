@@ -4,15 +4,43 @@ import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 import useProducts from '../hooks/useProducts'
+import useSiteSettings from '../hooks/useSiteSettings'
 import type { Product } from '../types'
+
+const defaultHero = {
+  badge: '限時特賣 最高 20% 折扣',
+  title_prefix: '提升您的',
+  title_highlight: '遊戲體驗',
+  description: '即時取得 Steam、PlayStation、Xbox 和 Mobile Legends 點數。發卡迅速，100% 安全。',
+  button_text: '立即選購',
+  image_url: '',
+}
 
 export default function Home() {
   const { categories, loading, fetchFeaturedProducts } = useProducts()
+  const { getSetting, loading: settingsLoading } = useSiteSettings()
   const [featured, setFeatured] = useState<Product[]>([])
+  const [hero, setHero] = useState(defaultHero)
 
   useEffect(() => {
     fetchFeaturedProducts().then(setFeatured)
   }, [fetchFeaturedProducts])
+
+  useEffect(() => {
+    if (!settingsLoading) {
+      const h = getSetting('hero') as Record<string, string>
+      if (h && Object.keys(h).length > 0) {
+        setHero({
+          badge: h.badge || defaultHero.badge,
+          title_prefix: h.title_prefix || defaultHero.title_prefix,
+          title_highlight: h.title_highlight || defaultHero.title_highlight,
+          description: h.description || defaultHero.description,
+          button_text: h.button_text || defaultHero.button_text,
+          image_url: h.image_url || defaultHero.image_url,
+        })
+      }
+    }
+  }, [settingsLoading, getSetting])
 
   return (
     <>
@@ -24,17 +52,17 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-r from-background-dark via-background-dark/60 to-transparent z-10" />
             <img
               className="w-full h-full object-cover"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP6myavyKAGP7q7TrPTaLzW-pbz77kBPgnNEMDJqNQMf8EH9EBZKueUZI-yhaVSIPNdqKGGHHsgR9gznHVZGlrsyCnWyVtzBn0xRz9zGgLWrdW4HG29RO86Om6SSWQABVXe9qL1kd6YHQi97nmF7hj2s-03P1I8gbCjFbUfImiMMk2EbovrU_H-Pai7BTWr3IWuj6WxjTfzd_EbgunNp0svREIj3mcSYZKVgqqQkBSgjS34C04GdiqbOs9Re-d4xlnYaRPBxgb4o0"
+              src={hero.image_url || "https://lh3.googleusercontent.com/aida-public/AB6AXuDP6myavyKAGP7q7TrPTaLzW-pbz77kBPgnNEMDJqNQMf8EH9EBZKueUZI-yhaVSIPNdqKGGHHsgR9gznHVZGlrsyCnWyVtzBn0xRz9zGgLWrdW4HG29RO86Om6SSWQABVXe9qL1kd6YHQi97nmF7hj2s-03P1I8gbCjFbUfImiMMk2EbovrU_H-Pai7BTWr3IWuj6WxjTfzd_EbgunNp0svREIj3mcSYZKVgqqQkBSgjS34C04GdiqbOs9Re-d4xlnYaRPBxgb4o0"}
               alt="遊戲主題橫幅"
             />
             <div className="absolute inset-0 z-20 flex flex-col justify-center px-8 md:px-16 max-w-2xl">
-              <span className="bg-primary px-3 py-1 rounded-full text-xs font-bold text-white mb-4 w-fit">限時特賣 最高 20% 折扣</span>
+              {hero.badge && <span className="bg-primary px-3 py-1 rounded-full text-xs font-bold text-white mb-4 w-fit">{hero.badge}</span>}
               <h1 className="text-4xl md:text-6xl font-black text-white leading-tight mb-4">
-                提升您的 <span className="text-primary">遊戲體驗</span>
+                {hero.title_prefix} <span className="text-primary">{hero.title_highlight}</span>
               </h1>
-              <p className="text-slate-300 text-lg mb-8 max-w-lg">即時取得 Steam、PlayStation、Xbox 和 Mobile Legends 點數。發卡迅速，100% 安全。</p>
+              <p className="text-slate-300 text-lg mb-8 max-w-lg">{hero.description}</p>
               <div className="flex gap-4">
-                <Link to="/products" className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg shadow-primary/20">立即選購</Link>
+                <Link to="/products" className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg shadow-primary/20">{hero.button_text}</Link>
               </div>
             </div>
           </div>

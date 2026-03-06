@@ -30,10 +30,13 @@ export default function useSiteSettings() {
     if (!supabase) return { error: '尚未連接資料庫' }
     const { error } = await supabase
       .from('site_settings')
-      .update({ value })
-      .eq('key', key)
+      .upsert({ key, value }, { onConflict: 'key' })
     if (!error) {
-      setSettings(prev => prev.map(s => s.key === key ? { ...s, value } : s))
+      setSettings(prev => {
+        const exists = prev.some(s => s.key === key)
+        if (exists) return prev.map(s => s.key === key ? { ...s, value } : s)
+        return [...prev, { id: '', key, value, updated_at: new Date().toISOString() }]
+      })
     }
     return { error: error?.message }
   }
