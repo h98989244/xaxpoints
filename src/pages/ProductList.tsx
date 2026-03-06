@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
@@ -58,7 +58,7 @@ export default function ProductList() {
       <Navbar />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <nav className="flex items-center gap-2 mb-6 text-sm font-medium">
-          <Link className="text-slate-500 hover:text-primary" to="/">首頁</Link>
+          <a className="text-slate-500 hover:text-primary" href="/">首頁</a>
           <span className="material-symbols-outlined text-xs text-slate-500">chevron_right</span>
           <span className="text-primary">商品列表</span>
         </nav>
@@ -133,7 +133,7 @@ export default function ProductList() {
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                     {products.map((product) => (
-                      <Link to={`/products/${product.id}`} key={product.id} className="bg-slate-50 dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 group">
+                      <a href={`/products/${product.id}`} key={product.id} className="bg-slate-50 dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 group">
                         <div className="aspect-video relative overflow-hidden bg-slate-200 dark:bg-slate-700">
                           {product.image_urls[0] ? (
                             <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src={product.image_urls[0]} alt={product.name} />
@@ -167,7 +167,7 @@ export default function ProductList() {
                             </span>
                           </div>
                         </div>
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 )}

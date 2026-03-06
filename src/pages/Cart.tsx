@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import useCart from '../hooks/useCart'
@@ -20,7 +20,7 @@ export default function Cart() {
             <span className="material-symbols-outlined text-6xl text-slate-400 mb-4">shopping_cart</span>
             <h2 className="text-xl font-bold mb-2">購物車是空的</h2>
             <p className="text-slate-500 mb-6">快去挑選您喜愛的遊戲點數吧！</p>
-            <Link to="/products" className="bg-primary text-white px-8 py-3 rounded-xl font-bold">前往商店</Link>
+            <a href="/products" className="bg-primary text-white px-8 py-3 rounded-xl font-bold">前往商店</a>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -61,10 +61,10 @@ export default function Cart() {
                 ))}
               </div>
               <div className="flex justify-between items-center mt-4">
-                <Link to="/products" className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors text-slate-500 dark:text-slate-400">
+                <a href="/products" className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors text-slate-500 dark:text-slate-400">
                   <span className="material-symbols-outlined text-lg">arrow_back</span>
                   <span>繼續購物</span>
-                </Link>
+                </a>
                 <p className="text-sm text-slate-500 dark:text-slate-400">
                   共 <span className="text-slate-900 dark:text-white font-bold">{items.length}</span> 件商品
                 </p>
@@ -93,10 +93,10 @@ export default function Cart() {
                     <span>結帳總額</span>
                     <span className="text-primary">NT$ {totalAmount.toLocaleString()}</span>
                   </div>
-                  <Link to="/checkout" className="w-full bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity mt-4 shadow-lg shadow-primary/20">
+                  <a href="/checkout" className="w-full bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity mt-4 shadow-lg shadow-primary/20">
                     <span>前往結帳</span>
                     <span className="material-symbols-outlined">payments</span>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>

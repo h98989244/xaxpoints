@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
@@ -62,7 +62,7 @@ export default function Home() {
               </h1>
               <p className="text-slate-300 text-lg mb-8 max-w-lg">{hero.description}</p>
               <div className="flex gap-4">
-                <Link to="/products" className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg shadow-primary/20">{hero.button_text}</Link>
+                <a href="/products" className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg shadow-primary/20">{hero.button_text}</a>
               </div>
             </div>
           </div>
@@ -91,19 +91,19 @@ export default function Home() {
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold">精選平台</h2>
-            <Link className="text-primary font-semibold text-sm hover:underline" to="/products">查看全部</Link>
+            <a className="text-primary font-semibold text-sm hover:underline" href="/products">查看全部</a>
           </div>
           {loading ? <LoadingSpinner /> : (
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {categories.map((cat) => (
-                <Link to={`/products?category=${cat.slug}`} key={cat.id} className="group cursor-pointer">
+                <a href={`/products?category=${cat.slug}`} key={cat.id} className="group cursor-pointer">
                   <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-800 flex flex-col items-center gap-4 transition-all hover:border-primary">
                     <div className="size-16 rounded-lg bg-primary/10 flex items-center justify-center">
                       <span className="material-symbols-outlined text-primary text-3xl">{cat.icon ?? 'sports_esports'}</span>
                     </div>
                     <span className="font-bold">{cat.name}</span>
                   </div>
-                </Link>
+                </a>
               ))}
               {categories.length === 0 && (
                 <p className="col-span-full text-center text-slate-500 py-8">尚無分類資料</p>
@@ -116,12 +116,12 @@ export default function Home() {
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold">熱銷點數</h2>
-            <Link className="text-primary font-semibold text-sm hover:underline" to="/products">查看全部</Link>
+            <a className="text-primary font-semibold text-sm hover:underline" href="/products">查看全部</a>
           </div>
           {loading ? <LoadingSpinner /> : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {featured.map((product) => (
-                <Link to={`/products/${product.id}`} key={product.id} className="bg-slate-50 dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 group">
+                <a href={`/products/${product.id}`} key={product.id} className="bg-slate-50 dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 group">
                   <div className="aspect-video relative overflow-hidden bg-slate-200 dark:bg-slate-700">
                     {product.image_urls[0] ? (
                       <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src={product.image_urls[0]} alt={product.name} />
@@ -150,7 +150,7 @@ export default function Home() {
                       <span className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-bold text-sm transition-all shadow-md shadow-primary/20">立即購買</span>
                     </div>
                   </div>
-                </Link>
+                </a>
               ))}
               {featured.length === 0 && (
                 <p className="col-span-full text-center text-slate-500 py-8">尚無精選商品</p>

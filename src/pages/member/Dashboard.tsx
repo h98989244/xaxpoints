@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+
 import MemberSidebar from '../../components/layout/MemberSidebar'
 import useAuth from '../../hooks/useAuth'
 import useOrders from '../../hooks/useOrders'
@@ -71,9 +71,9 @@ export default function Dashboard() {
                   <span className="material-symbols-outlined text-primary">receipt_long</span>
                 </div>
               </div>
-              <Link to="/member/history" className="mt-4 w-full py-2 border border-primary text-primary font-bold rounded-lg hover:bg-primary hover:text-white transition-all text-center block">
+              <a href="/member/history" className="mt-4 w-full py-2 border border-primary text-primary font-bold rounded-lg hover:bg-primary hover:text-white transition-all text-center block">
                 查看紀錄
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -81,7 +81,7 @@ export default function Dashboard() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-bold">最近購買紀錄</h2>
-              <Link to="/member/history" className="text-primary text-sm font-bold hover:underline">查看全部</Link>
+              <a href="/member/history" className="text-primary text-sm font-bold hover:underline">查看全部</a>
             </div>
             {loading ? (
               <div className="text-center py-8 text-slate-500">載入中...</div>

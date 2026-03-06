@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import useCart from '../hooks/useCart'
@@ -85,7 +85,7 @@ export default function Checkout() {
         <main className="max-w-md mx-auto px-4 py-20 text-center">
           <span className="material-symbols-outlined text-6xl text-slate-400 mb-4">shopping_cart</span>
           <h1 className="text-xl font-bold mb-2">購物車是空的</h1>
-          <Link to="/products" className="text-primary font-bold">前往商店</Link>
+          <a href="/products" className="text-primary font-bold">前往商店</a>
         </main>
       <Footer /></>
     )
@@ -232,12 +232,12 @@ export default function Checkout() {
               >
                 {submitting ? '處理中...' : '確認付款'}
               </button>
-              <Link to="/cart" className="w-full flex items-center justify-center gap-2 text-sm text-slate-400 hover:text-white transition-colors py-2 mt-2">
+              <a href="/cart" className="w-full flex items-center justify-center gap-2 text-sm text-slate-400 hover:text-white transition-colors py-2 mt-2">
                 <span className="material-symbols-outlined text-sm">arrow_back</span>返回購物車修改
-              </Link>
+              </a>
               <div className="mt-4 p-4 bg-slate-100/50 dark:bg-slate-800/50 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
                 <p className="text-xs text-slate-500 leading-relaxed text-center">
-                  按下確認付款即代表您已閱讀並同意本站之<Link to="/terms" className="text-primary">服務條款</Link>與退換貨政策。
+                  按下確認付款即代表您已閱讀並同意本站之<a href="/terms" className="text-primary">服務條款</a>與退換貨政策。
                 </p>
               </div>
             </div>

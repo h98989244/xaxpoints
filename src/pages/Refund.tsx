@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 
@@ -132,9 +132,9 @@ export default function Refund() {
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               如有退款相關疑問，歡迎聯繫我們的客服團隊，我們將盡快為您處理。
             </p>
-            <Link to="/contact" className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-bold text-sm transition-all inline-block">
+            <a href="/contact" className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-bold text-sm transition-all inline-block">
               聯絡客服
-            </Link>
+            </a>
           </div>
 
           <p className="text-xs text-slate-400 text-center">

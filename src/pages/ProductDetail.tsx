@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
@@ -40,7 +40,7 @@ export default function ProductDetail() {
       <main className="max-w-3xl mx-auto px-4 py-20 text-center">
         <span className="material-symbols-outlined text-6xl text-slate-400 mb-4">search_off</span>
         <h1 className="text-2xl font-bold mb-2">找不到商品</h1>
-        <Link to="/products" className="text-primary font-bold hover:underline">返回商品列表</Link>
+        <a href="/products" className="text-primary font-bold hover:underline">返回商品列表</a>
       </main>
       <Footer />
     </>
@@ -52,9 +52,9 @@ export default function ProductDetail() {
       <main className="max-w-[1280px] mx-auto w-full px-6 lg:px-10 py-8">
         {/* 麵包屑 */}
         <nav className="flex items-center gap-2 mb-8 text-sm font-medium">
-          <Link className="text-slate-500 hover:text-primary" to="/">首頁</Link>
+          <a className="text-slate-500 hover:text-primary" href="/">首頁</a>
           <span className="material-symbols-outlined text-xs text-slate-500">chevron_right</span>
-          <Link className="text-slate-500 hover:text-primary" to="/products">商品列表</Link>
+          <a className="text-slate-500 hover:text-primary" href="/products">商品列表</a>
           <span className="material-symbols-outlined text-xs text-slate-500">chevron_right</span>
           <span className="text-primary">{product.name}</span>
         </nav>
@@ -122,13 +122,13 @@ export default function ProductDetail() {
                   <span className="material-symbols-outlined">shopping_cart</span>
                   {added ? '已加入！' : '加入購物車'}
                 </button>
-                <Link
-                  to="/checkout"
+                <a
+                  href="/checkout"
                   onClick={handleAddToCart}
                   className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold py-3 px-8 rounded-lg hover:opacity-90 transition-all text-center"
                 >
                   立即購買
-                </Link>
+                </a>
               </div>
             </div>
 

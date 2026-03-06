@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
@@ -114,8 +114,8 @@ export default function OrderComplete() {
 
         {/* 操作按鈕 */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link to="/member/history" className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-xl font-bold text-center transition-all">查看購買紀錄</Link>
-          <Link to="/products" className="bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 px-8 py-3 rounded-xl font-bold text-center transition-all">繼續購物</Link>
+          <a href="/member/history" className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-xl font-bold text-center transition-all">查看購買紀錄</a>
+          <a href="/products" className="bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 px-8 py-3 rounded-xl font-bold text-center transition-all">繼續購物</a>
         </div>
       </main>
       <Footer />

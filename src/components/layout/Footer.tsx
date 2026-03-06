@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
@@ -20,8 +19,8 @@ export default function Footer() {
           <div>
             <h4 className="font-bold mb-6">公司資訊</h4>
             <ul className="space-y-4 text-sm text-slate-500 dark:text-slate-400">
-              <li><Link className="hover:text-primary transition-colors" to="/about">關於我們</Link></li>
-              <li><Link className="hover:text-primary transition-colors" to="/contact">聯絡我們</Link></li>
+              <li><a className="hover:text-primary transition-colors" href="/about">關於我們</a></li>
+              <li><a className="hover:text-primary transition-colors" href="/contact">聯絡我們</a></li>
             </ul>
           </div>
 
@@ -29,10 +28,10 @@ export default function Footer() {
           <div>
             <h4 className="font-bold mb-6">客戶服務</h4>
             <ul className="space-y-4 text-sm text-slate-500 dark:text-slate-400">
-              <li><Link className="hover:text-primary transition-colors" to="/faq">常見問題</Link></li>
-              <li><Link className="hover:text-primary transition-colors" to="/terms">服務條款</Link></li>
-              <li><Link className="hover:text-primary transition-colors" to="/privacy">隱私權政策</Link></li>
-              <li><Link className="hover:text-primary transition-colors" to="/refund">退款政策</Link></li>
+              <li><a className="hover:text-primary transition-colors" href="/faq">常見問題</a></li>
+              <li><a className="hover:text-primary transition-colors" href="/terms">服務條款</a></li>
+              <li><a className="hover:text-primary transition-colors" href="/privacy">隱私權政策</a></li>
+              <li><a className="hover:text-primary transition-colors" href="/refund">退款政策</a></li>
             </ul>
           </div>
 

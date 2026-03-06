@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 
 const menuItems = [
@@ -18,16 +18,16 @@ export default function MemberSidebar() {
         <div className="bg-primary p-2 rounded-lg">
           <span className="material-symbols-outlined text-white">videogame_asset</span>
         </div>
-        <Link to="/" className="text-xl font-bold tracking-tight text-primary">遊戲點數</Link>
+        <a href="/" className="text-xl font-bold tracking-tight text-primary">遊戲點數</a>
       </div>
 
       <nav className="flex-1 px-4 py-4 space-y-1">
         {menuItems.map((item) => {
           const isActive = location.pathname === item.path
           return (
-            <Link
+            <a
               key={item.path}
-              to={item.path}
+              href={item.path}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
                 isActive
                   ? 'bg-primary/10 text-primary'
@@ -36,7 +36,7 @@ export default function MemberSidebar() {
             >
               <span className="material-symbols-outlined">{item.icon}</span>
               <span className="font-medium">{item.label}</span>
-            </Link>
+            </a>
           )
         })}
       </nav>

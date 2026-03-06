@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 
 export default function AdminLogin() {
@@ -24,7 +24,7 @@ export default function AdminLogin() {
           </div>
           <h2 className="text-xl font-bold mb-2">權限不足</h2>
           <p className="text-slate-500 text-sm mb-6">此帳號沒有管理員權限，無法進入後台。</p>
-          <Link to="/" className="text-primary font-bold text-sm hover:underline">返回首頁</Link>
+          <a href="/" className="text-primary font-bold text-sm hover:underline">返回首頁</a>
         </div>
       </div>
     )
@@ -112,9 +112,9 @@ export default function AdminLogin() {
         </form>
 
         <div className="mt-6 text-center">
-          <Link to="/" className="text-slate-400 text-sm hover:text-primary transition-colors">
+          <a href="/" className="text-slate-400 text-sm hover:text-primary transition-colors">
             ← 返回前台首頁
-          </Link>
+          </a>
         </div>
       </div>
     </div>
