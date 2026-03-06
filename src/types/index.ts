@@ -9,6 +9,7 @@ export interface Profile {
   loyalty_points: number
   member_level: string
   email_subscription: boolean
+  referral_code: string | null
   promo_notification: boolean
   created_at: string
   updated_at: string

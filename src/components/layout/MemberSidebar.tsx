@@ -4,6 +4,7 @@ import useAuth from '../../hooks/useAuth'
 const menuItems = [
   { path: '/member', icon: 'dashboard', label: '控制台' },
   { path: '/member/history', icon: 'history', label: '購買紀錄' },
+  { path: '/member/referral', icon: 'share', label: '推薦好友' },
   { path: '/member/settings', icon: 'manage_accounts', label: '帳號設定' },
   { path: '/member/security', icon: 'shield_person', label: '帳號安全' },
 ]

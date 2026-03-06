@@ -19,6 +19,7 @@ import Dashboard from './pages/member/Dashboard'
 import PurchaseHistory from './pages/member/PurchaseHistory'
 import AccountSettings from './pages/member/AccountSettings'
 import Security from './pages/member/Security'
+import Referral from './pages/member/Referral'
 import Inventory from './pages/admin/Inventory'
 import Categories from './pages/admin/Categories'
 import Settings from './pages/admin/Settings'
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="/member" element={<RequireAuth><Dashboard /></RequireAuth>} />
         <Route path="/member/history" element={<RequireAuth><PurchaseHistory /></RequireAuth>} />
         <Route path="/member/settings" element={<RequireAuth><AccountSettings /></RequireAuth>} />
+        <Route path="/member/referral" element={<RequireAuth><Referral /></RequireAuth>} />
         <Route path="/member/security" element={<RequireAuth><Security /></RequireAuth>} />
 
         {/* 後台頁面 */}

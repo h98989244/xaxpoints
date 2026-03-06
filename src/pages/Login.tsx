@@ -1,17 +1,33 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import useAuth from '../hooks/useAuth'
+import { supabase } from '../lib/supabase'
 
 export default function Login() {
-  const [isLogin, setIsLogin] = useState(true)
+  const [searchParams] = useSearchParams()
+  const refCode = searchParams.get('ref') ?? ''
+  const [isLogin, setIsLogin] = useState(!refCode)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [displayName, setDisplayName] = useState('')
   const [error, setError] = useState('')
+  const [refName, setRefName] = useState('')
   const { signInWithEmail, signUpWithEmail } = useAuth()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!refCode || !supabase) return
+    supabase
+      .from('profiles')
+      .select('display_name')
+      .eq('referral_code', refCode)
+      .single()
+      .then(({ data }) => {
+        if (data?.display_name) setRefName(data.display_name)
+      })
+  }, [refCode])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -29,6 +45,25 @@ export default function Login() {
       if (error) {
         setError(error.message)
       } else {
+        // 記錄推薦關係
+        if (refCode && supabase) {
+          try {
+            const { data: referrer } = await supabase
+              .from('profiles')
+              .select('id')
+              .eq('referral_code', refCode)
+              .single()
+            const { data: { user: newUser } } = await supabase.auth.getUser()
+            if (referrer && newUser) {
+              await supabase.from('referrals').insert({
+                referrer_id: referrer.id,
+                referred_id: newUser.id,
+              })
+            }
+          } catch {
+            // 推薦紀錄失敗不影響註冊
+          }
+        }
         navigate('/member')
       }
     }
@@ -54,6 +89,13 @@ export default function Login() {
               註冊
             </button>
           </div>
+
+          {refCode && (
+            <div className="mb-4 p-3 rounded-lg bg-primary/10 border border-primary/20 text-primary text-sm flex items-center gap-2">
+              <span className="material-symbols-outlined text-lg">celebration</span>
+              <span>{refName ? `${refName} 邀請您加入` : '您已透過好友邀請連結前來'}，註冊後雙方各得 50 紅利點數！</span>
+            </div>
+          )}
 
           {error && (
             <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-sm">

@@ -164,7 +164,7 @@ export default function Home() {
           <div className="relative z-10 flex-1">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-4">推薦好友，賺取獎勵</h2>
             <p className="text-white/80 text-lg mb-6">向好友推薦 GameCredit，每位好友完成首筆交易，您即可獲得紅利點數獎勵。</p>
-            <button className="bg-white text-primary px-8 py-3 rounded-xl font-bold hover:bg-slate-100 transition-all shadow-xl">獲取邀請連結</button>
+            <button onClick={() => { window.location.href = '/member/referral' }} className="bg-white text-primary px-8 py-3 rounded-xl font-bold hover:bg-slate-100 transition-all shadow-xl">獲取邀請連結</button>
           </div>
         </section>
       </main>
