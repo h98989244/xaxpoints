@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import LoadingSpinner from '../../components/ui/LoadingSpinner'
 import useProducts from '../../hooks/useProducts'
+import { supabase } from '../../lib/supabase'
 import type { Product } from '../../types'
 
 export default function Inventory() {
@@ -14,8 +15,10 @@ export default function Inventory() {
   const [form, setForm] = useState({
     name: '', description: '', price: '', original_price: '', category_id: '',
     platform: '', region: '台灣', stock: '', is_active: true, is_featured: false,
-    tags: '', image_urls: '', redemption_guide: '', usage_restrictions: '',
+    tags: '', image_urls: [] as string[], redemption_guide: '', usage_restrictions: '',
   })
+  const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     loadProducts()
@@ -36,7 +39,7 @@ export default function Inventory() {
 
   function openCreateForm() {
     setEditingId(null)
-    setForm({ name: '', description: '', price: '', original_price: '', category_id: '', platform: '', region: '台灣', stock: '', is_active: true, is_featured: false, tags: '', image_urls: '', redemption_guide: '', usage_restrictions: '' })
+    setForm({ name: '', description: '', price: '', original_price: '', category_id: '', platform: '', region: '台灣', stock: '', is_active: true, is_featured: false, tags: '', image_urls: [], redemption_guide: '', usage_restrictions: '' })
     setShowForm(true)
   }
 
@@ -45,7 +48,7 @@ export default function Inventory() {
     setForm({
       name: p.name, description: p.description ?? '', price: String(p.price), original_price: p.original_price ? String(p.original_price) : '',
       category_id: p.category_id ?? '', platform: p.platform ?? '', region: p.region, stock: String(p.stock),
-      is_active: p.is_active, is_featured: p.is_featured, tags: p.tags.join(', '), image_urls: p.image_urls.join('\n'),
+      is_active: p.is_active, is_featured: p.is_featured, tags: p.tags.join(', '), image_urls: [...p.image_urls],
       redemption_guide: p.redemption_guide ?? '', usage_restrictions: p.usage_restrictions ?? '',
     })
     setShowForm(true)
@@ -65,7 +68,7 @@ export default function Inventory() {
       is_active: form.is_active,
       is_featured: form.is_featured,
       tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
-      image_urls: form.image_urls.split('\n').map(u => u.trim()).filter(Boolean),
+      image_urls: form.image_urls,
       redemption_guide: form.redemption_guide || null,
       usage_restrictions: form.usage_restrictions || null,
     }
@@ -147,8 +150,55 @@ export default function Inventory() {
                 <textarea rows={3} className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1 text-slate-400">圖片網址（每行一個）</label>
-                <textarea rows={2} className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.image_urls} onChange={(e) => setForm({ ...form, image_urls: e.target.value })} />
+                <label className="block text-sm font-medium mb-1 text-slate-400">商品圖片</label>
+                <div className="flex flex-wrap gap-3 mb-3">
+                  {form.image_urls.map((url, idx) => (
+                    <div key={idx} className="relative group w-24 h-24 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                      <img src={url} alt="" className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => setForm({ ...form, image_urls: form.image_urls.filter((_, i) => i !== idx) })}
+                        className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                      >
+                        <span className="material-symbols-outlined text-white">delete</span>
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    disabled={uploading}
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-24 h-24 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center gap-1 hover:border-primary hover:text-primary transition-colors text-slate-400 disabled:opacity-50"
+                  >
+                    <span className="material-symbols-outlined">{uploading ? 'hourglass_top' : 'add_photo_alternate'}</span>
+                    <span className="text-xs font-medium">{uploading ? '上傳中' : '上傳'}</span>
+                  </button>
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={async (e) => {
+                    const files = e.target.files
+                    if (!files?.length || !supabase) return
+                    setUploading(true)
+                    const newUrls: string[] = []
+                    for (const file of Array.from(files)) {
+                      const ext = file.name.split('.').pop()
+                      const path = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+                      const { error } = await supabase.storage.from('product-images').upload(path, file)
+                      if (!error) {
+                        const { data } = supabase.storage.from('product-images').getPublicUrl(path)
+                        newUrls.push(data.publicUrl)
+                      }
+                    }
+                    setForm((prev) => ({ ...prev, image_urls: [...prev.image_urls, ...newUrls] }))
+                    setUploading(false)
+                    e.target.value = ''
+                  }}
+                />
               </div>
               <div className="flex items-center gap-6">
                 <label className="flex items-center gap-2 cursor-pointer">
