@@ -35,7 +35,6 @@ export default function Home() {
               <p className="text-slate-300 text-lg mb-8 max-w-lg">即時取得 Steam、PlayStation、Xbox 和 Mobile Legends 點數。發卡迅速，100% 安全。</p>
               <div className="flex gap-4">
                 <Link to="/products" className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg shadow-primary/20">立即選購</Link>
-                <Link to="/products" className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-8 py-4 rounded-xl font-bold border border-white/20 transition-all">查看優惠</Link>
               </div>
             </div>
           </div>

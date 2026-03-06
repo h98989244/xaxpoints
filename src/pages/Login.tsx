@@ -99,23 +99,6 @@ export default function Login() {
               {isLogin ? '登入' : '註冊'}
             </button>
           </form>
-
-          {/* 社群登入 */}
-          <div className="mt-6">
-            <div className="relative flex items-center my-6">
-              <div className="flex-grow border-t border-slate-200 dark:border-slate-800" />
-              <span className="px-4 text-xs text-slate-500">或使用以下方式登入</span>
-              <div className="flex-grow border-t border-slate-200 dark:border-slate-800" />
-            </div>
-            <div className="flex gap-4">
-              <button className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-colors font-medium text-sm">
-                <span className="text-green-500 font-bold">LINE</span> 登入
-              </button>
-              <button className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-colors font-medium text-sm">
-                Google 登入
-              </button>
-            </div>
-          </div>
         </div>
       </main>
       <Footer />
