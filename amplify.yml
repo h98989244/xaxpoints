@@ -1,16 +1,18 @@
 version: 1
 frontend:
   phases:
+    preBuild:
+      commands:
+        - corepack enable
+        - corepack prepare pnpm@latest --activate
+        - pnpm install --frozen-lockfile
     build:
       commands:
-        - echo "靜態 HTML 部署"
+        - pnpm run build
   artifacts:
-    baseDirectory: .
+    baseDirectory: dist
     files:
-      - '**/*.html'
-      - '**/*.css'
-      - '**/*.js'
-      - '**/*.png'
-      - '**/*.jpg'
-      - '**/*.svg'
-      - '**/*.ico'
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
