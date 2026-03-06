@@ -36,7 +36,7 @@ export default function Terms() {
             <li>使用者應自行確認帳號區域是否符合商品使用限制。</li>
           </ul>
 
-          <p className="text-sm text-slate-500">最後更新日期：2024 年 1 月 1 日</p>
+          <p className="text-sm text-slate-500">最後更新日期：2026 年 3 月 1 日</p>
         </div>
       </main>
       <Footer />

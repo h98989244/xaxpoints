@@ -20,7 +20,7 @@ export default function About() {
               </div>
               <div>
                 <h2 className="text-xl font-bold">GameCredit 遊戲點數</h2>
-                <p className="text-sm text-slate-500">心安心食品有限公司 經營</p>
+                <p className="text-sm text-slate-500">心安儲值通 經營</p>
               </div>
             </div>
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
@@ -64,7 +64,7 @@ export default function About() {
               <div className="space-y-4">
                 <div>
                   <p className="text-slate-500 mb-1">公司名稱</p>
-                  <p className="font-medium">心安心食品有限公司</p>
+                  <p className="font-medium">心安儲值通</p>
                 </div>
                 <div>
                   <p className="text-slate-500 mb-1">營業項目</p>

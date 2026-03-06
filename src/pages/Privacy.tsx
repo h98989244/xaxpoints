@@ -35,7 +35,7 @@ export default function Privacy() {
           <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">五、您的權利</h2>
           <p>您有權要求存取、更正或刪除您的個人資料。請聯繫客服提出申請。</p>
 
-          <p className="text-sm text-slate-500">最後更新日期：2024 年 1 月 1 日</p>
+          <p className="text-sm text-slate-500">最後更新日期：2026 年 3 月 1 日</p>
         </div>
       </main>
       <Footer />

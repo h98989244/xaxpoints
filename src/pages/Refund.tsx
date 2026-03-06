@@ -138,7 +138,7 @@ export default function Refund() {
           </div>
 
           <p className="text-xs text-slate-400 text-center">
-            本退款政策最後更新日期：2025 年 1 月。GameCredit 保留修改本政策之權利。
+            本退款政策最後更新日期：2026 年 3 月。GameCredit 保留修改本政策之權利。
           </p>
         </div>
       </main>

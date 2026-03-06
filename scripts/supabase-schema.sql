@@ -261,7 +261,7 @@ CREATE POLICY "Admin 可修改網站設定" ON site_settings
   );
 
 INSERT INTO site_settings (key, value) VALUES
-  ('general', '{"site_name": "GameCredit 遊戲點數", "company_name": "心安心食品有限公司", "tax_id": "", "logo_url": "", "contact_email": "", "contact_phone": "", "address": ""}'::jsonb),
+  ('general', '{"site_name": "GameCredit 遊戲點數", "company_name": "心安儲值通", "tax_id": "", "logo_url": "", "contact_email": "", "contact_phone": "", "address": ""}'::jsonb),
   ('seo', '{"meta_title": "GameCredit - 優質遊戲點數交易平台", "meta_description": "即時取得 Steam、PlayStation、Xbox 點數，發卡迅速，100% 安全。"}'::jsonb),
   ('payment', '{"methods": ["credit_card", "atm", "convenience_store"], "currency": "TWD"}'::jsonb);
 
