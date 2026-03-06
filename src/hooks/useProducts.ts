@@ -47,7 +47,7 @@ export default function useProducts() {
     return data as Product | null
   }
 
-  async function fetchFeaturedProducts() {
+  const fetchFeaturedProducts = useCallback(async () => {
     if (!supabase) return []
     const { data } = await supabase
       .from('products')
@@ -57,7 +57,7 @@ export default function useProducts() {
       .order('sort_order')
       .limit(4)
     return (data ?? []) as Product[]
-  }
+  }, [])
 
   const fetchFilteredProducts = useCallback(async (params: {
     categorySlug?: string

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 import type { SiteSetting } from '../types'
 
@@ -22,9 +22,9 @@ export default function useSiteSettings() {
     setLoading(false)
   }
 
-  function getSetting(key: string) {
+  const getSetting = useCallback((key: string) => {
     return settings.find(s => s.key === key)?.value ?? {}
-  }
+  }, [settings])
 
   async function updateSetting(key: string, value: Record<string, unknown>) {
     if (!supabase) return { error: '尚未連接資料庫' }
