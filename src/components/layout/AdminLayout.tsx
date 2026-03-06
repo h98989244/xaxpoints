@@ -27,6 +27,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               庫存管理
             </a>
             <a
+              href="/admin/categories"
+              className={pathname === '/admin/categories' ? 'text-primary' : 'hover:text-primary transition-colors'}
+            >
+              分類管理
+            </a>
+            <a
               href="/admin/settings"
               className={pathname === '/admin/settings' ? 'text-primary' : 'hover:text-primary transition-colors'}
             >

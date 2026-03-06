@@ -144,10 +144,57 @@ export default function useProducts() {
     return { error: error?.message }
   }
 
+  // 管理員：取得所有分類（包含未啟用）
+  async function fetchAllCategories() {
+    if (!supabase) return []
+    const { data } = await supabase
+      .from('categories')
+      .select('*')
+      .order('sort_order')
+    return (data ?? []) as Category[]
+  }
+
+  // 管理員：新增分類
+  async function createCategory(category: { name: string; slug: string; icon?: string; sort_order?: number }) {
+    if (!supabase) return { error: '尚未連接資料庫' }
+    const { data, error } = await supabase
+      .from('categories')
+      .insert({ ...category, is_active: true })
+      .select()
+      .single()
+    return { data: data as Category | null, error: error?.message }
+  }
+
+  // 管理員：更新分類
+  async function updateCategory(id: string, updates: Partial<Category>) {
+    if (!supabase) return { error: '尚未連接資料庫' }
+    const { error } = await supabase
+      .from('categories')
+      .update(updates)
+      .eq('id', id)
+    return { error: error?.message }
+  }
+
+  // 管理員：刪除分類
+  async function deleteCategory(id: string) {
+    if (!supabase) return { error: '尚未連接資料庫' }
+    // 先將使用此分類的商品設為未分類
+    await supabase
+      .from('products')
+      .update({ category_id: null })
+      .eq('category_id', id)
+    const { error } = await supabase
+      .from('categories')
+      .delete()
+      .eq('id', id)
+    return { error: error?.message }
+  }
+
   return {
     products, categories, loading,
     fetchProducts, fetchCategories, fetchProductById,
     fetchFeaturedProducts, fetchFilteredProducts, fetchAllProducts,
     createProduct, updateProduct, deleteProduct,
+    fetchAllCategories, createCategory, updateCategory, deleteCategory,
   }
 }

@@ -20,6 +20,7 @@ import PurchaseHistory from './pages/member/PurchaseHistory'
 import AccountSettings from './pages/member/AccountSettings'
 import Security from './pages/member/Security'
 import Inventory from './pages/admin/Inventory'
+import Categories from './pages/admin/Categories'
 import Settings from './pages/admin/Settings'
 
 export default function App() {
@@ -50,6 +51,7 @@ export default function App() {
         {/* 後台頁面 */}
         <Route path="/admin" element={<AdminLayout><div /></AdminLayout>} />
         <Route path="/admin/inventory" element={<AdminLayout><Inventory /></AdminLayout>} />
+        <Route path="/admin/categories" element={<AdminLayout><Categories /></AdminLayout>} />
         <Route path="/admin/settings" element={<AdminLayout><Settings /></AdminLayout>} />
 
         {/* 404 */}
