@@ -1,5 +1,22 @@
+import { useState } from 'react'
+import { supabase } from '../../lib/supabase'
 
 export default function Footer() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+  async function handleSubscribe() {
+    if (!email || !supabase) return
+    const { error } = await supabase.from('newsletter_subscribers').insert({ email })
+    if (error) {
+      setStatus(error.code === '23505' ? 'success' : 'error')
+    } else {
+      setStatus('success')
+    }
+    setEmail('')
+    setTimeout(() => setStatus('idle'), 3000)
+  }
+
   return (
     <footer className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,11 +61,16 @@ export default function Footer() {
                 className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm px-4 focus:ring-primary"
                 placeholder="電子郵件地址"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
               />
-              <button className="bg-primary text-white p-2 rounded-lg">
+              <button onClick={handleSubscribe} className="bg-primary text-white p-2 rounded-lg hover:bg-primary/90 transition-colors">
                 <span className="material-symbols-outlined">send</span>
               </button>
             </div>
+            {status === 'success' && <p className="text-xs text-green-500 mt-2">訂閱成功！感謝您的訂閱。</p>}
+            {status === 'error' && <p className="text-xs text-red-500 mt-2">訂閱失敗，請稍後再試。</p>}
           </div>
         </div>
 
