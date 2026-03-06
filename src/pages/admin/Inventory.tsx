@@ -105,116 +105,124 @@ export default function Inventory() {
           </button>
         </div>
 
-        {/* 新增/編輯表單 */}
+        {/* 新增/編輯 Modal */}
         {showForm && (
-          <div className="mb-8 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6">
-            <h3 className="text-lg font-bold mb-4">{editingId ? '編輯商品' : '新增商品'}</h3>
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1 text-slate-400">商品名稱 *</label>
-                <input required className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowForm(false)}>
+            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+            <div className="relative bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+              <div className="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-4 flex items-center justify-between z-10">
+                <h3 className="text-lg font-bold">{editingId ? '編輯商品' : '新增商品'}</h3>
+                <button onClick={() => setShowForm(false)} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                  <span className="material-symbols-outlined">close</span>
+                </button>
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-1 text-slate-400">平台</label>
-                <input className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.platform} onChange={(e) => setForm({ ...form, platform: e.target.value })} placeholder="如 Steam、PlayStation" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1 text-slate-400">售價 *</label>
-                <input required type="number" step="0.01" className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1 text-slate-400">原價（選填）</label>
-                <input type="number" step="0.01" className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.original_price} onChange={(e) => setForm({ ...form, original_price: e.target.value })} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1 text-slate-400">分類</label>
-                <select className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.category_id} onChange={(e) => setForm({ ...form, category_id: e.target.value })}>
-                  <option value="">未分類</option>
-                  {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1 text-slate-400">庫存數量</label>
-                <input type="number" className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1 text-slate-400">區域</label>
-                <input className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.region} onChange={(e) => setForm({ ...form, region: e.target.value })} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1 text-slate-400">標籤（逗號分隔）</label>
-                <input className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} placeholder="熱門, 特賣" />
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1 text-slate-400">商品描述</label>
-                <textarea rows={3} className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1 text-slate-400">商品圖片</label>
-                <div className="flex flex-wrap gap-3 mb-3">
-                  {form.image_urls.map((url, idx) => (
-                    <div key={idx} className="relative group w-24 h-24 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
-                      <img src={url} alt="" className="w-full h-full object-cover" />
-                      <button
-                        type="button"
-                        onClick={() => setForm({ ...form, image_urls: form.image_urls.filter((_, i) => i !== idx) })}
-                        className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
-                      >
-                        <span className="material-symbols-outlined text-white">delete</span>
-                      </button>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    disabled={uploading}
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-24 h-24 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center gap-1 hover:border-primary hover:text-primary transition-colors text-slate-400 disabled:opacity-50"
-                  >
-                    <span className="material-symbols-outlined">{uploading ? 'hourglass_top' : 'add_photo_alternate'}</span>
-                    <span className="text-xs font-medium">{uploading ? '上傳中' : '上傳'}</span>
-                  </button>
+              <form onSubmit={handleSubmit} className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-slate-400">商品名稱 *</label>
+                  <input required className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
                 </div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  className="hidden"
-                  onChange={async (e) => {
-                    const files = e.target.files
-                    if (!files?.length || !supabase) return
-                    setUploading(true)
-                    const newUrls: string[] = []
-                    for (const file of Array.from(files)) {
-                      const ext = file.name.split('.').pop()
-                      const path = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
-                      const { error } = await supabase.storage.from('product-images').upload(path, file)
-                      if (!error) {
-                        const { data } = supabase.storage.from('product-images').getPublicUrl(path)
-                        newUrls.push(data.publicUrl)
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-slate-400">平台</label>
+                  <input className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.platform} onChange={(e) => setForm({ ...form, platform: e.target.value })} placeholder="如 Steam、PlayStation" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-slate-400">售價 *</label>
+                  <input required type="number" step="0.01" className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-slate-400">原價（選填）</label>
+                  <input type="number" step="0.01" className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.original_price} onChange={(e) => setForm({ ...form, original_price: e.target.value })} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-slate-400">分類</label>
+                  <select className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.category_id} onChange={(e) => setForm({ ...form, category_id: e.target.value })}>
+                    <option value="">未分類</option>
+                    {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-slate-400">庫存數量</label>
+                  <input type="number" className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-slate-400">區域</label>
+                  <input className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.region} onChange={(e) => setForm({ ...form, region: e.target.value })} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-slate-400">標籤（逗號分隔）</label>
+                  <input className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} placeholder="熱門, 特賣" />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium mb-1 text-slate-400">商品描述</label>
+                  <textarea rows={3} className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:ring-primary" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium mb-1 text-slate-400">商品圖片</label>
+                  <div className="flex flex-wrap gap-3 mb-3">
+                    {form.image_urls.map((url, idx) => (
+                      <div key={idx} className="relative group w-24 h-24 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                        <img src={url} alt="" className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => setForm({ ...form, image_urls: form.image_urls.filter((_, i) => i !== idx) })}
+                          className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                        >
+                          <span className="material-symbols-outlined text-white">delete</span>
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      disabled={uploading}
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-24 h-24 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center gap-1 hover:border-primary hover:text-primary transition-colors text-slate-400 disabled:opacity-50"
+                    >
+                      <span className="material-symbols-outlined">{uploading ? 'hourglass_top' : 'add_photo_alternate'}</span>
+                      <span className="text-xs font-medium">{uploading ? '上傳中' : '上傳'}</span>
+                    </button>
+                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={async (e) => {
+                      const files = e.target.files
+                      if (!files?.length || !supabase) return
+                      setUploading(true)
+                      const newUrls: string[] = []
+                      for (const file of Array.from(files)) {
+                        const ext = file.name.split('.').pop()
+                        const path = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+                        const { error } = await supabase.storage.from('product-images').upload(path, file)
+                        if (!error) {
+                          const { data } = supabase.storage.from('product-images').getPublicUrl(path)
+                          newUrls.push(data.publicUrl)
+                        }
                       }
-                    }
-                    setForm((prev) => ({ ...prev, image_urls: [...prev.image_urls, ...newUrls] }))
-                    setUploading(false)
-                    e.target.value = ''
-                  }}
-                />
-              </div>
-              <div className="flex items-center gap-6">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} className="rounded border-slate-300 text-primary focus:ring-primary" />
-                  <span className="text-sm">上架中</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={form.is_featured} onChange={(e) => setForm({ ...form, is_featured: e.target.checked })} className="rounded border-slate-300 text-primary focus:ring-primary" />
-                  <span className="text-sm">精選商品</span>
-                </label>
-              </div>
-              <div className="md:col-span-2 flex gap-4">
-                <button type="submit" className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-bold text-sm">{editingId ? '儲存' : '新增'}</button>
-                <button type="button" onClick={() => setShowForm(false)} className="bg-slate-200 dark:bg-slate-800 px-6 py-2 rounded-lg font-bold text-sm">取消</button>
-              </div>
-            </form>
+                      setForm((prev) => ({ ...prev, image_urls: [...prev.image_urls, ...newUrls] }))
+                      setUploading(false)
+                      e.target.value = ''
+                    }}
+                  />
+                </div>
+                <div className="flex items-center gap-6">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} className="rounded border-slate-300 text-primary focus:ring-primary" />
+                    <span className="text-sm">上架中</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" checked={form.is_featured} onChange={(e) => setForm({ ...form, is_featured: e.target.checked })} className="rounded border-slate-300 text-primary focus:ring-primary" />
+                    <span className="text-sm">精選商品</span>
+                  </label>
+                </div>
+                <div className="md:col-span-2 flex gap-4 pt-2">
+                  <button type="submit" className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-bold text-sm">{editingId ? '儲存' : '新增'}</button>
+                  <button type="button" onClick={() => setShowForm(false)} className="bg-slate-200 dark:bg-slate-800 px-6 py-2 rounded-lg font-bold text-sm">取消</button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
 
