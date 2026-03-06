@@ -50,11 +50,9 @@ export default function App() {
         <Route path="/member/security" element={<RequireAuth><Security /></RequireAuth>} />
 
         {/* 後台頁面 */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={null} />
-          <Route path="inventory" element={<Inventory />} />
-          <Route path="settings" element={<Settings />} />
-        </Route>
+        <Route path="/admin" element={<AdminLayout><div /></AdminLayout>} />
+        <Route path="/admin/inventory" element={<AdminLayout><Inventory /></AdminLayout>} />
+        <Route path="/admin/settings" element={<AdminLayout><Settings /></AdminLayout>} />
 
         {/* 404 */}
         <Route path="*" element={<NotFound />} />
