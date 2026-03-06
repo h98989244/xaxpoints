@@ -1,8 +1,34 @@
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
+import LoadingSpinner from '../components/ui/LoadingSpinner'
+import useOrders from '../hooks/useOrders'
+import useAuth from '../hooks/useAuth'
+import type { Order, OrderItem } from '../types'
 
 export default function OrderComplete() {
+  const { id } = useParams<{ id: string }>()
+  const { user } = useAuth()
+  const { fetchOrderById, fetchOrderItems } = useOrders(user?.id)
+  const [order, setOrder] = useState<Order | null>(null)
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!id) return
+    Promise.all([
+      fetchOrderById(id),
+      fetchOrderItems(id),
+    ]).then(([orderData, itemsData]) => {
+      setOrder(orderData)
+      setOrderItems(itemsData)
+      setLoading(false)
+    })
+  }, [id, fetchOrderById, fetchOrderItems])
+
+  if (loading) return <><Navbar /><LoadingSpinner /><Footer /></>
+
   return (
     <>
       <Navbar />
@@ -30,27 +56,61 @@ export default function OrderComplete() {
         </div>
 
         {/* 訂單資訊 */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 mb-6">
-          <h3 className="font-bold mb-4">訂單資訊</h3>
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <p className="text-slate-500">訂單編號</p>
-              <p className="font-bold">ORD-20240101-A1B2C3</p>
-            </div>
-            <div>
-              <p className="text-slate-500">訂單日期</p>
-              <p className="font-bold">{new Date().toLocaleDateString('zh-TW')}</p>
-            </div>
-            <div>
-              <p className="text-slate-500">付款方式</p>
-              <p className="font-bold">信用卡</p>
-            </div>
-            <div>
-              <p className="text-slate-500">付款狀態</p>
-              <span className="inline-block px-2 py-0.5 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded-full text-xs font-bold">已完成</span>
+        {order && (
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 mb-6">
+            <h3 className="font-bold mb-4">訂單資訊</h3>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-slate-500">訂單編號</p>
+                <p className="font-bold">{order.order_number}</p>
+              </div>
+              <div>
+                <p className="text-slate-500">訂單日期</p>
+                <p className="font-bold">{new Date(order.created_at).toLocaleDateString('zh-TW')}</p>
+              </div>
+              <div>
+                <p className="text-slate-500">付款方式</p>
+                <p className="font-bold">{order.payment_method}</p>
+              </div>
+              <div>
+                <p className="text-slate-500">訂單狀態</p>
+                <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold ${
+                  order.status === '已完成' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                  : order.status === '已取消' ? 'bg-red-100 text-red-700'
+                  : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                }`}>{order.status}</span>
+              </div>
+              <div>
+                <p className="text-slate-500">總金額</p>
+                <p className="font-bold text-primary">NT$ {order.total_amount.toLocaleString()}</p>
+              </div>
+              {order.discount_amount > 0 && (
+                <div>
+                  <p className="text-slate-500">折扣金額</p>
+                  <p className="font-bold text-green-500">-NT$ {order.discount_amount.toLocaleString()}</p>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        )}
+
+        {/* 購買明細 */}
+        {orderItems.length > 0 && (
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 mb-6">
+            <h3 className="font-bold mb-4">購買明細</h3>
+            <div className="space-y-3">
+              {orderItems.map((item) => (
+                <div key={item.id} className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800 last:border-0">
+                  <div>
+                    <p className="font-medium">{item.product_name}</p>
+                    <p className="text-xs text-slate-500">x {item.quantity}</p>
+                  </div>
+                  <p className="font-bold">NT$ {item.subtotal.toLocaleString()}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* 操作按鈕 */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

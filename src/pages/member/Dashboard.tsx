@@ -1,8 +1,12 @@
+import { Link } from 'react-router-dom'
 import MemberSidebar from '../../components/layout/MemberSidebar'
 import useAuth from '../../hooks/useAuth'
+import useOrders from '../../hooks/useOrders'
 
 export default function Dashboard() {
-  const { profile } = useAuth()
+  const { profile, user } = useAuth()
+  const { orders, loading } = useOrders(user?.id)
+  const recentOrders = orders.slice(0, 3)
 
   return (
     <div className="flex min-h-screen">
@@ -16,17 +20,17 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <button className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 relative">
-              <span className="material-symbols-outlined">notifications</span>
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900" />
-            </button>
             <div className="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-slate-800">
               <div className="text-right">
                 <p className="text-sm font-bold">{profile?.display_name ?? '會員'}</p>
                 <p className="text-xs text-slate-500">{profile?.member_level}</p>
               </div>
-              <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
-                <span className="material-symbols-outlined">person</span>
+              <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
+                {profile?.avatar_url ? (
+                  <img src={profile.avatar_url} alt="頭像" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="material-symbols-outlined">person</span>
+                )}
               </div>
             </div>
           </div>
@@ -37,8 +41,12 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 p-6 rounded-xl bg-gradient-to-br from-primary to-blue-700 text-white shadow-xl flex items-center justify-between relative overflow-hidden">
               <div className="relative z-10 flex items-center gap-6">
-                <div className="w-24 h-24 rounded-full border-4 border-white/20 bg-slate-600 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-4xl">person</span>
+                <div className="w-24 h-24 rounded-full border-4 border-white/20 bg-slate-600 flex items-center justify-center overflow-hidden">
+                  {profile?.avatar_url ? (
+                    <img src={profile.avatar_url} alt="頭像" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="material-symbols-outlined text-4xl">person</span>
+                  )}
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold mb-1">{profile?.display_name ?? '會員'}</h1>
@@ -56,40 +64,57 @@ export default function Dashboard() {
             <div className="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-slate-500 text-sm font-medium">可用優惠券</p>
-                  <p className="text-3xl font-bold mt-1">0 <span className="text-base font-normal text-slate-400">張</span></p>
+                  <p className="text-slate-500 text-sm font-medium">累計訂單</p>
+                  <p className="text-3xl font-bold mt-1">{orders.length} <span className="text-base font-normal text-slate-400">筆</span></p>
                 </div>
                 <div className="p-2 bg-primary/10 rounded-lg">
-                  <span className="material-symbols-outlined text-primary">confirmation_number</span>
+                  <span className="material-symbols-outlined text-primary">receipt_long</span>
                 </div>
               </div>
-              <button className="mt-4 w-full py-2 border border-primary text-primary font-bold rounded-lg hover:bg-primary hover:text-white transition-all">
-                立即兌換
-              </button>
+              <Link to="/member/history" className="mt-4 w-full py-2 border border-primary text-primary font-bold rounded-lg hover:bg-primary hover:text-white transition-all text-center block">
+                查看紀錄
+              </Link>
             </div>
           </div>
 
-          {/* 最近購買紀錄 & 專屬優惠 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold">最近購買紀錄</h2>
-              </div>
+          {/* 最近購買紀錄 */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold">最近購買紀錄</h2>
+              <Link to="/member/history" className="text-primary text-sm font-bold hover:underline">查看全部</Link>
+            </div>
+            {loading ? (
+              <div className="text-center py-8 text-slate-500">載入中...</div>
+            ) : recentOrders.length === 0 ? (
               <div className="p-8 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center">
                 <span className="material-symbols-outlined text-4xl text-slate-400 mb-2">receipt_long</span>
                 <p className="text-slate-500">尚無購買紀錄</p>
               </div>
-            </div>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold">專屬兌換優惠</h2>
+            ) : (
+              <div className="space-y-3">
+                {recentOrders.map((order) => (
+                  <div key={order.id} className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                        <span className="material-symbols-outlined text-primary">shopping_bag</span>
+                      </div>
+                      <div>
+                        <p className="font-bold text-sm">{order.order_number}</p>
+                        <p className="text-xs text-slate-500">{new Date(order.created_at).toLocaleString('zh-TW')}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold">NT$ {order.total_amount.toLocaleString()}</p>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+                        order.status === '已完成' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                        : order.status === '已取消' ? 'bg-red-100 text-red-700'
+                        : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                      }`}>{order.status}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="p-6 rounded-xl bg-slate-900 border-2 border-dashed border-slate-700 flex flex-col items-center justify-center text-center space-y-2">
-                <span className="material-symbols-outlined text-slate-500 text-4xl">card_giftcard</span>
-                <h3 className="font-bold">更多驚喜兌換即將推出</h3>
-                <p className="text-slate-500 text-xs">追蹤我們的社交媒體以獲取最新資訊</p>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </main>

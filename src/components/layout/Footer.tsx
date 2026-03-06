@@ -12,11 +12,8 @@ export default function Footer() {
               <span className="text-xl font-bold tracking-tight">GameCredit 遊戲點數</span>
             </div>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              全球領先的即時數位遊戲點數交易平台。深受全球數百萬玩家信任。
+              全球領先的即時數位遊戲點數交易平台。
             </p>
-            <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
-              <p>心安心食品有限公司</p>
-            </div>
           </div>
 
           {/* 公司資訊 */}
@@ -25,8 +22,6 @@ export default function Footer() {
             <ul className="space-y-4 text-sm text-slate-500 dark:text-slate-400">
               <li><Link className="hover:text-primary transition-colors" to="#">關於我們</Link></li>
               <li><Link className="hover:text-primary transition-colors" to="#">聯絡我們</Link></li>
-              <li><Link className="hover:text-primary transition-colors" to="#">媒體庫</Link></li>
-              <li><Link className="hover:text-primary transition-colors" to="#">招賢納才</Link></li>
             </ul>
           </div>
 
