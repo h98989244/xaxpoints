@@ -55,11 +55,7 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
           <p>&copy; {new Date().getFullYear()} GameCredit 心安心食品有限公司 版權所有。</p>
-          <div className="flex gap-4">
-            <span className="material-symbols-outlined text-xl">payments</span>
-            <span className="material-symbols-outlined text-xl">credit_card</span>
-            <span className="material-symbols-outlined text-xl">account_balance_wallet</span>
-          </div>
+
         </div>
       </div>
     </footer>
