@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
 import { RequireAuth, RequireAdmin } from './components/auth/RequireAuth'
 import Home from './pages/Home'
 import ProductList from './pages/ProductList'
@@ -25,6 +26,7 @@ import Settings from './pages/admin/Settings'
 export default function App() {
   return (
     <BrowserRouter>
+      <AuthProvider>
       <Routes>
         {/* 前台頁面 */}
         <Route path="/" element={<Home />} />
@@ -55,6 +57,7 @@ export default function App() {
         {/* 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

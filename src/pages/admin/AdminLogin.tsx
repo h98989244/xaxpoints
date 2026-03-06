@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 
 export default function AdminLogin() {
   const { user, isAdmin, loading, signInWithEmail } = useAuth()
-  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -12,8 +11,7 @@ export default function AdminLogin() {
 
   // 已登入且是 Admin，直接導向後台
   if (!loading && user && isAdmin) {
-    navigate('/admin/inventory', { replace: true })
-    return null
+    return <Navigate to="/admin/inventory" replace />
   }
 
   // 已登入但不是 Admin
