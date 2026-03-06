@@ -28,7 +28,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     let cancelled = false
 
-    // 先設定監聽，再取得 session（避免競態條件）
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (cancelled) return
       setUser(session?.user ?? null)
@@ -40,17 +39,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     })
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (cancelled) return
-      setUser(session?.user ?? null)
-      if (session?.user) {
-        fetchProfile(session.user.id)
-      } else {
-        setLoading(false)
+    async function initSession() {
+      try {
+        const { data: { session }, error } = await supabase!.auth.getSession()
+        if (cancelled) return
+        if (error) {
+          // session 無效或過期，清除並重置
+          await supabase!.auth.signOut()
+          setUser(null)
+          setProfile(null)
+          setLoading(false)
+          return
+        }
+        setUser(session?.user ?? null)
+        if (session?.user) {
+          fetchProfile(session.user.id)
+        } else {
+          setLoading(false)
+        }
+      } catch {
+        if (!cancelled) {
+          setUser(null)
+          setProfile(null)
+          setLoading(false)
+        }
       }
-    }).catch(() => {
-      if (!cancelled) setLoading(false)
-    })
+    }
+
+    initSession()
 
     return () => {
       cancelled = true
