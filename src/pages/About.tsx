@@ -1,16 +1,18 @@
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
+import LoadingSpinner from '../components/ui/LoadingSpinner'
 import useSiteSettings from '../hooks/useSiteSettings'
 
 export default function About() {
-  const { getSetting } = useSiteSettings()
+  const { getSetting, loading } = useSiteSettings()
   const general = getSetting('general') as Record<string, string>
-  const siteName = general.site_name || 'GameCredit 遊戲點數'
+  const siteName = general.site_name || ''
   const companyName = general.company_name || ''
 
   return (
     <>
       <Navbar />
+      {loading ? <div className="py-20"><LoadingSpinner /></div> : (
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold mb-2">關於我們</h1>
@@ -107,6 +109,7 @@ export default function About() {
           </section>
         </div>
       </main>
+      )}
       <Footer />
     </>
   )
