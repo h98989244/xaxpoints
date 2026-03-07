@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import useAuth from '../../hooks/useAuth'
 import useCart from '../../hooks/useCart'
 import useProducts from '../../hooks/useProducts'
 import useSiteSettings from '../../hooks/useSiteSettings'
 
 export default function Navbar() {
+  const [searchQuery, setSearchQuery] = useState('')
   const { user, isAdmin, signOut } = useAuth()
   const { totalItems } = useCart()
   const { categories } = useProducts()
@@ -36,14 +38,16 @@ export default function Navbar() {
 
           {/* 搜尋欄 */}
           <div className="hidden lg:flex flex-1 max-w-md mx-4">
-            <div className="relative w-full">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+            <form className="relative w-full" onSubmit={(e) => { e.preventDefault(); if (searchQuery.trim()) window.location.href = `/products?search=${encodeURIComponent(searchQuery.trim())}` }}>
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl cursor-pointer" onClick={() => { if (searchQuery.trim()) window.location.href = `/products?search=${encodeURIComponent(searchQuery.trim())}` }}>search</span>
               <input
                 className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary outline-none"
                 placeholder="搜尋遊戲或點數..."
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
-            </div>
+            </form>
           </div>
 
           {/* 操作按鈕 */}
