@@ -37,7 +37,7 @@ export default function Footer() {
               <span className="text-xl font-bold tracking-tight">{siteName}</span>
             </div>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              全球領先的即時數位遊戲點數交易平台。
+              全球領先的即時數位點數交易平台。
             </p>
           </div>
 

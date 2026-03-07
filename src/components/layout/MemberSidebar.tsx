@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import useSiteSettings from '../../hooks/useSiteSettings'
 
 const menuItems = [
   { path: '/member', icon: 'dashboard', label: '控制台' },
@@ -12,6 +13,9 @@ const menuItems = [
 export default function MemberSidebar() {
   const location = useLocation()
   const { signOut } = useAuth()
+  const { getSetting } = useSiteSettings()
+  const general = getSetting('general') as Record<string, string>
+  const siteName = general.site_name || ''
 
   return (
     <aside className="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col shrink-0">
@@ -19,7 +23,7 @@ export default function MemberSidebar() {
         <div className="bg-primary p-2 rounded-lg">
           <span className="material-symbols-outlined text-white">videogame_asset</span>
         </div>
-        <a href="/" className="text-xl font-bold tracking-tight text-primary">遊戲點數</a>
+        <a href="/" className="text-xl font-bold tracking-tight text-primary">{siteName}</a>
       </div>
 
       <nav className="flex-1 px-4 py-4 space-y-1">
