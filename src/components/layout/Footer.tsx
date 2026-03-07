@@ -7,8 +7,9 @@ export default function Footer() {
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const { getSetting } = useSiteSettings()
   const general = getSetting('general') as Record<string, string>
-  const siteName = general.site_name || 'GameCredit 遊戲點數'
+  const siteName = general.site_name
   const companyName = general.company_name || ''
+  const logoUrl = general.logo_url || ''
 
   async function handleSubscribe() {
     if (!email || !supabase) return
@@ -29,7 +30,11 @@ export default function Footer() {
           {/* 品牌資訊 */}
           <div className="space-y-6">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary text-3xl">sports_esports</span>
+              {logoUrl ? (
+                <img src={logoUrl} alt={siteName} className="h-8 w-8 object-contain" />
+              ) : (
+                <span className="material-symbols-outlined text-primary text-3xl">sports_esports</span>
+              )}
               <span className="text-xl font-bold tracking-tight">{siteName}</span>
             </div>
             <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -80,7 +85,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-          <p>&copy; {new Date().getFullYear()} {siteName} {companyName && `${companyName} `}版權所有。</p>
+          <p>&copy; {new Date().getFullYear()} {siteName} {companyName}版權所有。</p>
 
         </div>
       </div>

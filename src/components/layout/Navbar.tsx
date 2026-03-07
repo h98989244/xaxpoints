@@ -9,7 +9,8 @@ export default function Navbar() {
   const { categories } = useProducts()
   const { getSetting } = useSiteSettings()
   const general = getSetting('general') as Record<string, string>
-  const siteName = general.site_name || 'GameCredit 遊戲點數'
+  const siteName = general.site_name
+  const logoUrl = general.logo_url || ''
   const navCategories = categories.slice(0, 4)
 
   return (
@@ -18,7 +19,11 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2 shrink-0">
-            <span className="material-symbols-outlined text-primary text-3xl">sports_esports</span>
+            {logoUrl ? (
+              <img src={logoUrl} alt={siteName} className="h-8 w-8 object-contain" />
+            ) : (
+              <span className="material-symbols-outlined text-primary text-3xl">sports_esports</span>
+            )}
             <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">{siteName}</span>
           </a>
 

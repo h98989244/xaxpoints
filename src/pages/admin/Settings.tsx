@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import LoadingSpinner from '../../components/ui/LoadingSpinner'
 import useSiteSettings from '../../hooks/useSiteSettings'
+import { supabase } from '../../lib/supabase'
 
 export default function Settings() {
   const { loading, getSetting, updateSetting, refetch } = useSiteSettings()
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
+  const [logoUploading, setLogoUploading] = useState(false)
+  const logoInputRef = useRef<HTMLInputElement>(null)
 
   const [general, setGeneral] = useState({
     site_name: '', company_name: '', tax_id: '', logo_url: '',
@@ -92,6 +95,57 @@ export default function Settings() {
                 <div>
                   <label className="block text-sm font-medium mb-2 text-slate-400">統一編號</label>
                   <input className={inputClass} value={general.tax_id} onChange={(e) => setGeneral({ ...general, tax_id: e.target.value })} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-slate-400">網站 Logo</label>
+                  <div className="flex items-center gap-4">
+                    {general.logo_url ? (
+                      <div className="relative group w-20 h-20 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+                        <img src={general.logo_url} alt="Logo" className="w-full h-full object-contain p-1" />
+                        <button
+                          type="button"
+                          onClick={() => setGeneral({ ...general, logo_url: '' })}
+                          className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                        >
+                          <span className="material-symbols-outlined text-white">delete</span>
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        disabled={logoUploading}
+                        onClick={() => logoInputRef.current?.click()}
+                        className="w-20 h-20 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center gap-1 hover:border-primary hover:text-primary transition-colors text-slate-400 disabled:opacity-50"
+                      >
+                        <span className="material-symbols-outlined">{logoUploading ? 'hourglass_top' : 'add_photo_alternate'}</span>
+                        <span className="text-xs font-medium">{logoUploading ? '上傳中' : '上傳'}</span>
+                      </button>
+                    )}
+                    <input
+                      ref={logoInputRef}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0]
+                        if (!file || !supabase) return
+                        setLogoUploading(true)
+                        const ext = file.name.split('.').pop()
+                        const path = `site/logo-${Date.now()}.${ext}`
+                        const { error } = await supabase.storage.from('product-images').upload(path, file)
+                        if (!error) {
+                          const { data } = supabase.storage.from('product-images').getPublicUrl(path)
+                          setGeneral((prev) => ({ ...prev, logo_url: data.publicUrl }))
+                        }
+                        setLogoUploading(false)
+                        e.target.value = ''
+                      }}
+                    />
+                    <div className="text-xs text-slate-400">
+                      <p>建議尺寸：200x200px</p>
+                      <p>支援 PNG、JPG、SVG</p>
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2 text-slate-400">聯絡 Email</label>
