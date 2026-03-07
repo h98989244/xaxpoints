@@ -8,7 +8,6 @@ export default function Footer() {
   const { getSetting } = useSiteSettings()
   const general = getSetting('general') as Record<string, string>
   const siteName = general.site_name
-  const companyName = general.company_name || ''
   const logoUrl = general.logo_url || ''
 
   async function handleSubscribe() {
