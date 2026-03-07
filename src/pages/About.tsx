@@ -2,12 +2,14 @@ import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 import useSiteSettings from '../hooks/useSiteSettings'
+import useProducts from '../hooks/useProducts'
 
 export default function About() {
   const { getSetting, loading } = useSiteSettings()
   const general = getSetting('general') as Record<string, string>
   const siteName = general.site_name || ''
   const companyName = general.company_name || ''
+  const { categories } = useProducts()
 
   return (
     <>
@@ -32,7 +34,7 @@ export default function About() {
               </div>
             </div>
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-              {siteName} 是台灣專業的數位遊戲點數交易平台，致力於為玩家提供最便捷、安全的遊戲點數購買服務。我們與全球多家遊戲平台合作，提供 Steam、PlayStation、Xbox、Nintendo 及各類手遊點數，讓您隨時隨地輕鬆儲值。
+              {siteName} 是台灣專業的數位遊戲點數交易平台，致力於為玩家提供最便捷、安全的遊戲點數購買服務。我們與全球多家遊戲平台合作，提供{categories.length > 0 ? categories.map(c => c.name).join('、') : '各類遊戲點數'}，讓您隨時隨地輕鬆儲值。
             </p>
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
               自成立以來，我們始終秉持「快速、安全、實惠」的服務理念，已為超過數萬名玩家提供優質的點數購買體驗。
@@ -48,7 +50,7 @@ export default function About() {
                 { icon: 'verified_user', title: '安全保障', desc: '採用 SSL 加密傳輸與安全支付閘道，確保每筆交易的安全性。' },
                 { icon: 'savings', title: '優惠價格', desc: '定期推出限時特賣與折扣活動，讓您以最優惠的價格取得點數。' },
                 { icon: 'support_agent', title: '專業客服', desc: '全年無休的客服團隊，隨時為您解答疑問並處理售後問題。' },
-                { icon: 'public', title: '多平台支援', desc: '涵蓋 Steam、PSN、Xbox、Nintendo、手遊等主流遊戲平台。' },
+                { icon: 'public', title: '多平台支援', desc: categories.length > 0 ? `涵蓋${categories.map(c => c.name).join('、')}等主流遊戲平台。` : '涵蓋各大主流遊戲平台。' },
                 { icon: 'payments', title: '多元支付', desc: '支援信用卡、ATM 轉帳、超商繳費、LINE Pay 等多種付款方式。' },
               ].map((item) => (
                 <div key={item.icon} className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 text-center">
