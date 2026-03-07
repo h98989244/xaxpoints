@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { RequireAuth } from './components/auth/RequireAuth'
+import useSiteSettings from './hooks/useSiteSettings'
 import AdminLayout from './components/layout/AdminLayout'
 import Home from './pages/Home'
 import ProductList from './pages/ProductList'
@@ -25,6 +27,17 @@ import Categories from './pages/admin/Categories'
 import Settings from './pages/admin/Settings'
 
 export default function App() {
+  const { getSetting, loading } = useSiteSettings()
+
+  useEffect(() => {
+    if (!loading) {
+      const general = getSetting('general') as Record<string, string>
+      if (general.site_name) {
+        document.title = general.site_name
+      }
+    }
+  }, [loading, getSetting])
+
   return (
     <BrowserRouter>
       <Routes>
