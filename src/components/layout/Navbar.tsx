@@ -1,11 +1,15 @@
 import useAuth from '../../hooks/useAuth'
 import useCart from '../../hooks/useCart'
 import useProducts from '../../hooks/useProducts'
+import useSiteSettings from '../../hooks/useSiteSettings'
 
 export default function Navbar() {
   const { user, isAdmin, signOut } = useAuth()
   const { totalItems } = useCart()
   const { categories } = useProducts()
+  const { getSetting } = useSiteSettings()
+  const general = getSetting('general') as Record<string, string>
+  const siteName = general.site_name || 'GameCredit 遊戲點數'
   const navCategories = categories.slice(0, 4)
 
   return (
@@ -15,7 +19,7 @@ export default function Navbar() {
           {/* Logo */}
           <a href="/" className="flex items-center gap-2 shrink-0">
             <span className="material-symbols-outlined text-primary text-3xl">sports_esports</span>
-            <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">GameCredit 遊戲點數</span>
+            <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">{siteName}</span>
           </a>
 
           {/* 導覽連結 - 桌面版 */}

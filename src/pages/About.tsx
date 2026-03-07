@@ -1,14 +1,20 @@
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
+import useSiteSettings from '../hooks/useSiteSettings'
 
 export default function About() {
+  const { getSetting } = useSiteSettings()
+  const general = getSetting('general') as Record<string, string>
+  const siteName = general.site_name || 'GameCredit 遊戲點數'
+  const companyName = general.company_name || ''
+
   return (
     <>
       <Navbar />
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold mb-2">關於我們</h1>
-          <p className="text-slate-500">認識 GameCredit 遊戲點數交易平台</p>
+          <p className="text-slate-500">認識 {siteName} 交易平台</p>
         </div>
 
         <div className="space-y-10">
@@ -19,12 +25,12 @@ export default function About() {
                 <span className="material-symbols-outlined text-primary text-3xl">sports_esports</span>
               </div>
               <div>
-                <h2 className="text-xl font-bold">GameCredit 遊戲點數</h2>
-                <p className="text-sm text-slate-500">心安儲值通 經營</p>
+                <h2 className="text-xl font-bold">{siteName}</h2>
+                {companyName && <p className="text-sm text-slate-500">{companyName} 經營</p>}
               </div>
             </div>
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-              GameCredit 是台灣專業的數位遊戲點數交易平台，致力於為玩家提供最便捷、安全的遊戲點數購買服務。我們與全球多家遊戲平台合作，提供 Steam、PlayStation、Xbox、Nintendo 及各類手遊點數，讓您隨時隨地輕鬆儲值。
+              {siteName} 是台灣專業的數位遊戲點數交易平台，致力於為玩家提供最便捷、安全的遊戲點數購買服務。我們與全球多家遊戲平台合作，提供 Steam、PlayStation、Xbox、Nintendo 及各類手遊點數，讓您隨時隨地輕鬆儲值。
             </p>
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
               自成立以來，我們始終秉持「快速、安全、實惠」的服務理念，已為超過數萬名玩家提供優質的點數購買體驗。
@@ -33,7 +39,7 @@ export default function About() {
 
           {/* 為什麼選擇我們 */}
           <section>
-            <h2 className="text-2xl font-bold mb-6 text-center">為什麼選擇 GameCredit？</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">為什麼選擇 {siteName}？</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 { icon: 'speed', title: '即時發卡', desc: '付款完成後，點數序號自動發送至您的信箱，無需等待人工處理。' },
@@ -62,23 +68,39 @@ export default function About() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
               <div className="space-y-4">
-                <div>
-                  <p className="text-slate-500 mb-1">公司名稱</p>
-                  <p className="font-medium">心安儲值通</p>
-                </div>
+                {companyName && (
+                  <div>
+                    <p className="text-slate-500 mb-1">公司名稱</p>
+                    <p className="font-medium">{companyName}</p>
+                  </div>
+                )}
                 <div>
                   <p className="text-slate-500 mb-1">營業項目</p>
                   <p className="font-medium">數位商品銷售、遊戲點數代理</p>
                 </div>
+                {general.address && (
+                  <div>
+                    <p className="text-slate-500 mb-1">公司地址</p>
+                    <p className="font-medium">{general.address}</p>
+                  </div>
+                )}
               </div>
               <div className="space-y-4">
+                {general.contact_email && (
+                  <div>
+                    <p className="text-slate-500 mb-1">聯絡信箱</p>
+                    <p className="font-medium">{general.contact_email}</p>
+                  </div>
+                )}
+                {general.contact_phone && (
+                  <div>
+                    <p className="text-slate-500 mb-1">聯絡電話</p>
+                    <p className="font-medium">{general.contact_phone}</p>
+                  </div>
+                )}
                 <div>
                   <p className="text-slate-500 mb-1">服務時間</p>
                   <p className="font-medium">全年無休（線上自動發卡 24 小時）</p>
-                </div>
-                <div>
-                  <p className="text-slate-500 mb-1">客服時間</p>
-                  <p className="font-medium">週一至週日 10:00 - 22:00</p>
                 </div>
               </div>
             </div>

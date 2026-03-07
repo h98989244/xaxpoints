@@ -1,14 +1,18 @@
 import { useState } from 'react'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
+import useSiteSettings from '../hooks/useSiteSettings'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
+  const { getSetting } = useSiteSettings()
+  const general = getSetting('general') as Record<string, string>
+  const contactEmail = general.contact_email || ''
+  const contactPhone = general.contact_phone || ''
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    // 目前僅前端展示，未來可串接後端
     setSubmitted(true)
   }
 
@@ -30,13 +34,24 @@ export default function Contact() {
                 聯絡資訊
               </h3>
               <div className="space-y-5">
-                <div className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-primary mt-0.5">mail</span>
-                  <div>
-                    <p className="text-sm text-slate-500">Email</p>
-                    <p className="font-medium">support@gamecredit.tw</p>
+                {contactEmail && (
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-primary mt-0.5">mail</span>
+                    <div>
+                      <p className="text-sm text-slate-500">Email</p>
+                      <p className="font-medium">{contactEmail}</p>
+                    </div>
                   </div>
-                </div>
+                )}
+                {contactPhone && (
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-primary mt-0.5">phone</span>
+                    <div>
+                      <p className="text-sm text-slate-500">聯絡電話</p>
+                      <p className="font-medium">{contactPhone}</p>
+                    </div>
+                  </div>
+                )}
                 <div className="flex items-start gap-3">
                   <span className="material-symbols-outlined text-primary mt-0.5">schedule</span>
                   <div>
@@ -44,13 +59,15 @@ export default function Contact() {
                     <p className="font-medium">週一至週日 10:00 - 22:00</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-primary mt-0.5">chat</span>
-                  <div>
-                    <p className="text-sm text-slate-500">LINE 客服</p>
-                    <p className="font-medium">@gamecredit</p>
+                {general.address && (
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-primary mt-0.5">location_on</span>
+                    <div>
+                      <p className="text-sm text-slate-500">公司地址</p>
+                      <p className="font-medium">{general.address}</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 

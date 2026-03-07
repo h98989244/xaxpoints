@@ -1,10 +1,14 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import useSiteSettings from '../../hooks/useSiteSettings'
 import AdminLogin from '../../pages/admin/AdminLogin'
 import LoadingSpinner from '../ui/LoadingSpinner'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { user, isAdmin, loading } = useAuth()
+  const { getSetting } = useSiteSettings()
+  const general = getSetting('general') as Record<string, string>
+  const siteName = general.site_name || 'GameCredit'
   const { pathname } = useLocation()
 
   if (loading) return <LoadingSpinner />
@@ -17,7 +21,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="flex items-center gap-4">
           <a href="/" className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-2xl">sports_esports</span>
-            <span className="font-bold">GameCredit 後台</span>
+            <span className="font-bold">{siteName} 後台</span>
           </a>
           <nav className="hidden md:flex items-center gap-6 ml-8 text-sm font-medium">
             <a

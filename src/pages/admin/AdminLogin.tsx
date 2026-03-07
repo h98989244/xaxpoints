@@ -1,9 +1,13 @@
 import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import useSiteSettings from '../../hooks/useSiteSettings'
 
 export default function AdminLogin() {
   const { user, isAdmin, loading, signInWithEmail } = useAuth()
+  const { getSetting } = useSiteSettings()
+  const general = getSetting('general') as Record<string, string>
+  const siteName = general.site_name || 'GameCredit'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -64,7 +68,7 @@ export default function AdminLogin() {
             <span className="material-symbols-outlined text-primary text-3xl">admin_panel_settings</span>
           </div>
           <h1 className="text-2xl font-bold">後台管理系統</h1>
-          <p className="text-slate-500 text-sm mt-1">GameCredit 管理員登入</p>
+          <p className="text-slate-500 text-sm mt-1">{siteName} 管理員登入</p>
         </div>
 
         {error && (
