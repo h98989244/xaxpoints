@@ -8,7 +8,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { user, isAdmin, loading } = useAuth()
   const { getSetting } = useSiteSettings()
   const general = getSetting('general') as Record<string, string>
-  const siteName = general.site_name || 'GameCredit'
+  const siteName = general.site_name
   const { pathname } = useLocation()
 
   if (loading) return <LoadingSpinner />

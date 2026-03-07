@@ -1,15 +1,19 @@
 
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
-
+import useSiteSettings from '../hooks/useSiteSettings'
 export default function Refund() {
+  const { getSetting } = useSiteSettings()
+  const general = getSetting('general') as Record<string, string>
+  const siteName = general.site_name
+
   return (
     <>
       <Navbar />
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold mb-2">退款政策</h1>
-          <p className="text-slate-500">了解 GameCredit 的退款與退換貨規範</p>
+          <p className="text-slate-500">了解 {siteName} 的退款與退換貨規範</p>
         </div>
 
         <div className="space-y-8">
@@ -138,7 +142,7 @@ export default function Refund() {
           </div>
 
           <p className="text-xs text-slate-400 text-center">
-            本退款政策最後更新日期：2026 年 3 月。GameCredit 保留修改本政策之權利。
+            本退款政策最後更新日期：2026 年 3 月。{siteName} 保留修改本政策之權利。
           </p>
         </div>
       </main>

@@ -7,7 +7,7 @@ export default function AdminLogin() {
   const { user, isAdmin, loading, signInWithEmail } = useAuth()
   const { getSetting } = useSiteSettings()
   const general = getSetting('general') as Record<string, string>
-  const siteName = general.site_name || 'GameCredit'
+  const siteName = general.site_name
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')

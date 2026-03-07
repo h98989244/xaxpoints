@@ -8,7 +8,7 @@ export default function Terms() {
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-3xl font-bold mb-8">服務條款</h1>
         <div className="prose dark:prose-invert max-w-none space-y-6 text-slate-600 dark:text-slate-400">
-          <p>歡迎使用 GameCredit 遊戲點數交易平台（以下簡稱「本平台」）。請在使用本平台服務前，詳細閱讀以下條款。</p>
+          <p>歡迎使用「本平台」。請在使用本平台服務前，詳細閱讀以下條款。</p>
 
           <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">一、帳戶條款</h2>
           <ul className="list-disc pl-5 space-y-2">

@@ -8,7 +8,7 @@ export default function Privacy() {
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-3xl font-bold mb-8">隱私權政策</h1>
         <div className="prose dark:prose-invert max-w-none space-y-6 text-slate-600 dark:text-slate-400">
-          <p>GameCredit 遊戲點數交易平台（以下簡稱「本平台」）非常重視您的隱私。本政策說明我們如何蒐集、使用及保護您的個人資料。</p>
+          <p>「本平台」非常重視您的隱私。本政策說明我們如何蒐集、使用及保護您的個人資料。</p>
 
           <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">一、資料蒐集</h2>
           <p>我們可能蒐集以下資料：</p>
