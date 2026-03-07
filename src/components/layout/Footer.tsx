@@ -85,7 +85,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-          <p>&copy; {new Date().getFullYear()} {siteName} {companyName}版權所有。</p>
+          <p>&copy; {new Date().getFullYear()} {siteName} 版權所有。</p>
 
         </div>
       </div>
