@@ -78,7 +78,7 @@ export default function Checkout() {
         })),
       });
       clearCart();
-      navigate(`/orders/${data.order.id}`);
+      navigate(`/orders/${data.order.id}/success`);
     } catch (err) {
       setError(err instanceof Error ? err.message : '訂單建立失敗');
     } finally {

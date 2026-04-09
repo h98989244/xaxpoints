@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, MessageCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
@@ -55,17 +55,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Social / LINE */}
-            <div className="card p-6">
-              <h3 className="text-lg font-bold text-white mb-4">線上客服</h3>
-              <div className="flex items-center gap-3 p-3 bg-[#06C755]/10 border border-[#06C755]/20 rounded-xl">
-                <MessageCircle className="w-8 h-8 text-[#06C755]" />
-                <div>
-                  <p className="text-white text-sm font-medium">LINE 官方帳號</p>
-                  <p className="text-gray-400 text-xs">@zuohe-points</p>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Contact Form */}
