@@ -167,7 +167,7 @@ export default function AdminOrders() {
 
                     {/* Items */}
                     <div>
-                      <h4 className="text-gray-400 text-sm font-medium mb-2">商品���細</h4>
+                      <h4 className="text-gray-400 text-sm font-medium mb-2">商品明細</h4>
                       {order.items.map((item, idx) => (
                         <div
                           key={idx}
@@ -205,7 +205,7 @@ export default function AdminOrders() {
 
                     {order.note && (
                       <div className="text-sm">
-                        <span className="text-gray-400">���註：</span>
+                        <span className="text-gray-400">備註：</span>
                         <span className="text-gray-300 ml-1">{order.note}</span>
                       </div>
                     )}
@@ -253,7 +253,7 @@ export default function AdminOrders() {
           })}
         </div>
       ) : (
-        <div className="text-center py-20 text-gray-400">��有符合條件的訂單</div>
+        <div className="text-center py-20 text-gray-400">沒有符合條件的訂單</div>
       )}
 
       {/* Card Codes Modal */}
@@ -286,7 +286,7 @@ export default function AdminOrders() {
                 onClick={() => setShowCodesModal(null)}
                 className="flex-1 border border-[#C9A84C]/30 text-gray-300 hover:bg-[#253448] py-2.5 rounded-lg transition-colors"
               >
-                取���
+                取消
               </button>
               <button
                 onClick={() => {
