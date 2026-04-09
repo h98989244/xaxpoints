@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate, Navigate, Link } from 'react-router-dom';
-import { CreditCard, Building2, ShoppingBag } from 'lucide-react';
+import { CreditCard, Building2, ShoppingBag, User, Mail, Phone, Pencil } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import { api } from '../lib/api';
@@ -10,13 +10,15 @@ export default function Checkout() {
   const { items, totalAmount, clearCart } = useCart();
   const navigate = useNavigate();
 
-  const [buyerName, setBuyerName] = useState('');
-  const [buyerEmail, setBuyerEmail] = useState('');
   const [buyerPhone, setBuyerPhone] = useState('');
+  const [editingPhone, setEditingPhone] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'atm' | 'convenience_store'>('atm');
   const [note, setNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+
+  // Determine if phone needs to be entered
+  const hasPhone = !!user?.phone;
 
   if (authLoading) {
     return (
@@ -46,13 +48,26 @@ export default function Checkout() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
+
+    const phone = hasPhone && !editingPhone ? user.phone! : buyerPhone;
+
+    if (!phone || phone.trim().length === 0) {
+      setError('請輸入手機號碼');
+      return;
+    }
+
     setSubmitting(true);
 
     try {
+      // Save phone to profile if it's new or changed
+      if (!hasPhone || (editingPhone && buyerPhone !== user.phone)) {
+        await api.updateProfile({ phone: phone.trim() });
+      }
+
       const data = await api.createOrder({
-        buyer_name: buyerName,
-        buyer_email: buyerEmail,
-        buyer_phone: buyerPhone,
+        buyer_name: user.display_name,
+        buyer_email: user.email,
+        buyer_phone: phone.trim(),
         payment_method: paymentMethod,
         note: note || undefined,
         items: items.map((item) => ({
@@ -78,43 +93,76 @@ export default function Checkout() {
       <form onSubmit={handleSubmit} className="grid lg:grid-cols-5 gap-8">
         {/* Left: Form */}
         <div className="lg:col-span-3 space-y-6">
-          {/* Buyer Info */}
+          {/* Buyer Info - Auto-filled, read-only */}
           <div className="card p-6">
             <h2 className="text-lg font-semibold text-white mb-4">購買人資訊</h2>
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">姓名</label>
-                <input
-                  type="text"
-                  required
-                  value={buyerName}
-                  onChange={(e) => setBuyerName(e.target.value)}
-                  className="w-full bg-[#16213E] border border-[#C9A84C]/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#C9A84C] transition-colors"
-                  placeholder="請輸入姓名"
-                />
+              {/* Name - from account */}
+              <div className="flex items-center gap-3 p-3 bg-[#16213E] rounded-lg">
+                <User className="w-5 h-5 text-[#C9A84C] shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500">姓名</p>
+                  <p className="text-white font-medium truncate">{user.display_name}</p>
+                </div>
               </div>
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">Email</label>
-                <input
-                  type="email"
-                  required
-                  value={buyerEmail}
-                  onChange={(e) => setBuyerEmail(e.target.value)}
-                  className="w-full bg-[#16213E] border border-[#C9A84C]/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#C9A84C] transition-colors"
-                  placeholder="example@mail.com"
-                />
+
+              {/* Email - from account */}
+              <div className="flex items-center gap-3 p-3 bg-[#16213E] rounded-lg">
+                <Mail className="w-5 h-5 text-[#C9A84C] shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500">電子信箱</p>
+                  <p className="text-white font-medium truncate">{user.email}</p>
+                </div>
               </div>
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">手機號碼</label>
-                <input
-                  type="tel"
-                  required
-                  value={buyerPhone}
-                  onChange={(e) => setBuyerPhone(e.target.value)}
-                  className="w-full bg-[#16213E] border border-[#C9A84C]/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#C9A84C] transition-colors"
-                  placeholder="09xx-xxx-xxx"
-                />
-              </div>
+
+              {/* Phone - show saved value or input */}
+              {hasPhone && !editingPhone ? (
+                <div className="flex items-center gap-3 p-3 bg-[#16213E] rounded-lg">
+                  <Phone className="w-5 h-5 text-[#C9A84C] shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-gray-500">手機號碼</p>
+                    <p className="text-white font-medium">{user.phone}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setBuyerPhone(user.phone || '');
+                      setEditingPhone(true);
+                    }}
+                    className="text-gray-400 hover:text-[#C9A84C] transition-colors p-1"
+                    title="修改手機號碼"
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1.5">
+                    <span className="flex items-center gap-1">
+                      <Phone className="w-4 h-4 text-[#C9A84C]" />
+                      手機號碼 {!hasPhone && <span className="text-[#C9A84C] text-xs">（首次下單需填寫，之後自動帶入）</span>}
+                    </span>
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={buyerPhone}
+                    onChange={(e) => setBuyerPhone(e.target.value)}
+                    className="w-full bg-[#16213E] border border-[#C9A84C]/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#C9A84C] transition-colors"
+                    placeholder="09xx-xxx-xxx"
+                    autoFocus={!hasPhone}
+                  />
+                  {editingPhone && (
+                    <button
+                      type="button"
+                      onClick={() => setEditingPhone(false)}
+                      className="text-sm text-gray-400 hover:text-[#C9A84C] mt-1"
+                    >
+                      取消修改
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 

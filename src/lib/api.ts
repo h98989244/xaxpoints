@@ -35,6 +35,11 @@ export const api = {
     }),
   logout: () => request<{ message: string }>('/auth/logout', { method: 'POST' }),
   getMe: () => request<{ user: User }>('/auth/me'),
+  updateProfile: (data: { phone?: string; display_name?: string }) =>
+    request<{ user: User }>('/auth/profile', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
 
   // Products
   getProducts: () => request<{ products: Product[] }>('/products'),

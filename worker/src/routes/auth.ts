@@ -112,6 +112,7 @@ auth.post('/register', async (c) => {
         id,
         email,
         display_name,
+        phone: null,
         role: 'user',
       },
     }, 201)
@@ -132,7 +133,7 @@ auth.post('/login', async (c) => {
     }
 
     const user = await c.env.DB.prepare(
-      'SELECT id, email, password_hash, display_name, role FROM users WHERE email = ?'
+      'SELECT id, email, password_hash, display_name, phone, role FROM users WHERE email = ?'
     ).bind(email).first()
 
     if (!user) {
@@ -160,6 +161,7 @@ auth.post('/login', async (c) => {
         id: user.id,
         email: user.email,
         display_name: user.display_name,
+        phone: user.phone,
         role: user.role,
       },
     })
@@ -181,6 +183,45 @@ auth.post('/logout', authMiddleware, async (c) => {
   } catch (error) {
     console.error('Logout error:', error)
     return c.json({ error: '登出失敗' }, 500)
+  }
+})
+
+// PUT /api/auth/profile - Update user profile (phone, display_name)
+auth.put('/profile', authMiddleware, async (c) => {
+  try {
+    const user = c.get('user')
+    const body = await c.req.json()
+    const { phone, display_name } = body
+
+    const updates: string[] = []
+    const values: any[] = []
+
+    if (phone !== undefined) {
+      updates.push('phone = ?')
+      values.push(phone)
+    }
+    if (display_name !== undefined) {
+      updates.push('display_name = ?')
+      values.push(display_name)
+    }
+
+    if (updates.length === 0) {
+      return c.json({ error: '沒有要更新的欄位' }, 400)
+    }
+
+    values.push(user.id)
+    await c.env.DB.prepare(
+      `UPDATE users SET ${updates.join(', ')} WHERE id = ?`
+    ).bind(...values).run()
+
+    const updatedUser = await c.env.DB.prepare(
+      'SELECT id, email, display_name, phone, role, created_at FROM users WHERE id = ?'
+    ).bind(user.id).first()
+
+    return c.json({ user: updatedUser })
+  } catch (error) {
+    console.error('Update profile error:', error)
+    return c.json({ error: '更新個人資料失敗' }, 500)
   }
 })
 
