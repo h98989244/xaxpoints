@@ -10,6 +10,10 @@ import Register from './pages/Register';
 import Orders from './pages/Orders';
 import OrderDetail from './pages/OrderDetail';
 import TrackOrder from './pages/TrackOrder';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
 import AdminLayout from './pages/admin/AdminLayout';
 import Dashboard from './pages/admin/Dashboard';
 import AdminProducts from './pages/admin/AdminProducts';
@@ -29,6 +33,10 @@ export default function App() {
         <Route path="orders" element={<Orders />} />
         <Route path="orders/:id" element={<OrderDetail />} />
         <Route path="track" element={<TrackOrder />} />
+        <Route path="about" element={<About />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="terms" element={<Terms />} />
+        <Route path="privacy" element={<Privacy />} />
       </Route>
       <Route path="admin" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />

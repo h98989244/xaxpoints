@@ -27,6 +27,7 @@ export default function Home() {
           <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-[#C9A84C] rounded-full blur-[100px]" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 text-center">
+          <img src="/logo.png" alt="佐和點數王" className="w-24 h-24 sm:w-32 sm:h-32 object-contain mx-auto mb-6 drop-shadow-[0_0_30px_rgba(201,168,76,0.3)]" />
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6">
             <span className="text-[#C9A84C]">佐和</span>點數王
           </h1>

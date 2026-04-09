@@ -29,7 +29,10 @@ export default function AdminLayout() {
         {/* Sidebar */}
         <aside className="lg:w-56 shrink-0">
           <div className="card p-4 lg:sticky lg:top-24">
-            <h2 className="text-[#C9A84C] font-bold text-lg mb-4 px-2">管理後台</h2>
+            <div className="flex items-center gap-2 px-2 mb-4">
+              <img src="/logo.png" alt="佐和點數王" className="w-7 h-7 object-contain" />
+              <h2 className="text-[#C9A84C] font-bold text-lg">管理後台</h2>
+            </div>
             <nav className="space-y-1">
               {navItems.map((item) => (
                 <NavLink

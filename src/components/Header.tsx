@@ -34,7 +34,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <Crown className="w-7 h-7 text-[#C9A84C]" />
+            <img src="/logo.png" alt="佐和點數王" className="w-8 h-8 object-contain" />
             <span className="text-xl font-bold text-[#C9A84C]">佐和點數王</span>
           </Link>
 

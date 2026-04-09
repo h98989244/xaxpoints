@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
-import { Crown, Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin } from 'lucide-react';
 
 export default function Footer() {
   return (
     <footer className="bg-[#0F0F23] border-t border-[#C9A84C]/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Crown className="w-6 h-6 text-[#C9A84C]" />
+              <img src="/logo.png" alt="佐和點數王" className="w-8 h-8 object-contain" />
               <span className="text-lg font-bold text-[#C9A84C]">佐和點數王</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -21,21 +21,36 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">快速連結</h3>
             <ul className="space-y-2">
-              <li>
-                <Link to="/" className="text-gray-400 hover:text-[#C9A84C] transition-colors text-sm">
-                  首頁
-                </Link>
-              </li>
-              <li>
-                <Link to="/products" className="text-gray-400 hover:text-[#C9A84C] transition-colors text-sm">
-                  商品列表
-                </Link>
-              </li>
-              <li>
-                <Link to="/track" className="text-gray-400 hover:text-[#C9A84C] transition-colors text-sm">
-                  訂單查詢
-                </Link>
-              </li>
+              {[
+                { to: '/', label: '首頁' },
+                { to: '/products', label: '商品列表' },
+                { to: '/track', label: '訂單查詢' },
+                { to: '/about', label: '關於我們' },
+              ].map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to} className="text-gray-400 hover:text-[#C9A84C] transition-colors text-sm">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="text-white font-semibold mb-4">法律資訊</h3>
+            <ul className="space-y-2">
+              {[
+                { to: '/terms', label: '服務條款' },
+                { to: '/privacy', label: '隱私權政策' },
+                { to: '/contact', label: '聯絡我們' },
+              ].map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to} className="text-gray-400 hover:text-[#C9A84C] transition-colors text-sm">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -61,7 +76,7 @@ export default function Footer() {
 
         <div className="mt-10 pt-6 border-t border-[#C9A84C]/10 text-center">
           <p className="text-gray-500 text-sm">
-            &copy; 2024 佐和點數王 All Rights Reserved.
+            &copy; {new Date().getFullYear()} 佐和點數王 All Rights Reserved.
           </p>
         </div>
       </div>
