@@ -1,20 +1,27 @@
 import { useState, type FormEvent } from 'react';
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
+import { useSettings } from '../contexts/SettingsContext';
 
 export default function Contact() {
+  const { settings } = useSettings();
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // In production, this would send to an API endpoint
     setSubmitted(true);
   };
+
+  const contactItems = [
+    { icon: Mail, label: '電子郵件', value: settings.email, href: settings.email ? `mailto:${settings.email}` : null },
+    { icon: Phone, label: '客服電話', value: settings.phone, href: settings.phone ? `tel:${settings.phone.replace(/-/g, '')}` : null },
+    { icon: MapPin, label: '營業地址', value: settings.address, href: null },
+    { icon: Clock, label: '服務時間', value: settings.service_hours, href: null },
+  ].filter((item) => item.value);
 
   return (
     <div className="min-h-screen py-12 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-black text-white mb-4">
             聯絡<span className="text-[#C9A84C]">我們</span>
@@ -25,17 +32,11 @@ export default function Contact() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          {/* Contact Info */}
           <div className="lg:col-span-2 space-y-6">
             <div className="card p-6">
               <h3 className="text-lg font-bold text-white mb-6">聯絡資訊</h3>
               <div className="space-y-5">
-                {[
-                  { icon: Mail, label: '電子郵件', value: 'support@zuohe.com', href: 'mailto:support@zuohe.com' },
-                  { icon: Phone, label: '客服電話', value: '02-1234-5678', href: 'tel:0212345678' },
-                  { icon: MapPin, label: '營業地址', value: '台北市中山區', href: null },
-                  { icon: Clock, label: '服務時間', value: '週一至週五 09:00 - 18:00', href: null },
-                ].map((item, i) => (
+                {contactItems.map((item, i) => (
                   <div key={i} className="flex items-start gap-4">
                     <div className="w-10 h-10 bg-[#C9A84C]/10 rounded-xl flex items-center justify-center shrink-0">
                       <item.icon className="w-5 h-5 text-[#C9A84C]" />
@@ -54,10 +55,8 @@ export default function Contact() {
                 ))}
               </div>
             </div>
-
           </div>
 
-          {/* Contact Form */}
           <div className="lg:col-span-3">
             <div className="card p-6 md:p-8">
               {submitted ? (

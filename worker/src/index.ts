@@ -4,6 +4,7 @@ import authRoutes from './routes/auth'
 import productRoutes from './routes/products'
 import orderRoutes from './routes/orders'
 import adminRoutes from './routes/admin'
+import settingsRoutes from './routes/settings'
 
 type Env = {
   DB: D1Database
@@ -35,6 +36,7 @@ app.route('/api/auth', authRoutes)
 app.route('/api/products', productRoutes)
 app.route('/api/orders', orderRoutes)
 app.route('/api/admin', adminRoutes)
+app.route('/api/settings', settingsRoutes)
 
 // 404 handler
 app.notFound((c) => {

@@ -91,3 +91,13 @@ export interface Stats {
   total_revenue: number;
   today_orders: number;
 }
+
+export interface SiteSettings {
+  email: string;
+  phone: string;
+  address: string;
+  tax_id: string;
+  store_name: string;
+  service_hours: string;
+  [key: string]: string;
+}

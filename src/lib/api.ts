@@ -1,4 +1,4 @@
-import type { User, Product, OrderRaw, Stats } from './types';
+import type { User, Product, OrderRaw, Stats, SiteSettings } from './types';
 import { parseOrder } from './types';
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
@@ -95,4 +95,12 @@ export const api = {
 
   // Admin
   getStats: () => request<Stats>('/admin/stats'),
+
+  // Settings
+  getSettings: () => request<{ settings: SiteSettings }>('/settings'),
+  updateSettings: (data: Partial<SiteSettings>) =>
+    request<{ settings: SiteSettings }>('/settings', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
 };

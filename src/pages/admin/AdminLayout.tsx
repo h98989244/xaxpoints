@@ -1,11 +1,12 @@
 import { NavLink, Outlet, Navigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ClipboardList } from 'lucide-react';
+import { LayoutDashboard, Package, ClipboardList, Settings } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const navItems = [
   { to: '/admin', icon: LayoutDashboard, label: 'Dashboard', end: true },
   { to: '/admin/products', icon: Package, label: '商品管理' },
   { to: '/admin/orders', icon: ClipboardList, label: '訂單管理' },
+  { to: '/admin/settings', icon: Settings, label: '網站設定' },
 ];
 
 export default function AdminLayout() {
