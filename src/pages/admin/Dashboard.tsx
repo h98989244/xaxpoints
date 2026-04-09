@@ -10,7 +10,7 @@ export default function Dashboard() {
   useEffect(() => {
     api
       .getStats()
-      .then((data) => setStats(data))
+      .then((data) => setStats((data as any).stats ?? data))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -33,7 +33,7 @@ export default function Dashboard() {
     {
       icon: DollarSign,
       label: '總營收',
-      value: stats ? `NT$${stats.total_revenue.toLocaleString()}` : 'NT$0',
+      value: stats ? `NT$${(stats.total_revenue ?? 0).toLocaleString()}` : 'NT$0',
       color: 'text-green-400',
       bg: 'bg-green-500/10',
     },
