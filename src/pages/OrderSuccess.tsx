@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { CheckCircle, Copy, Check, MessageCircle, Package, ShoppingBag } from 'lucide-react';
+import { CheckCircle, Copy, Check, Package, ShoppingBag } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../lib/api';
 import type { Order } from '../lib/types';
@@ -138,24 +138,15 @@ export default function OrderSuccess() {
       {/* Customer Service Flow */}
       <div className="card p-6 mb-6 text-center bg-gradient-to-b from-[#1E2A3A] to-[#1A2535] border-[#C9A84C]/20">
         <div className="w-12 h-12 bg-[#C9A84C]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-          <MessageCircle className="w-6 h-6 text-[#C9A84C]" />
+          <CheckCircle className="w-6 h-6 text-[#C9A84C]" />
         </div>
         <h3 className="text-lg font-bold text-white mb-3">人工客服確認流程</h3>
         <p className="text-gray-400 text-sm leading-relaxed mb-5">
           因本公司銷售點數卡產品為消耗性商品，本平台為預防詐騙，於成功下單後，會轉由人工客服進行確認進行 KYC，並確認購買商品相關性問題，確保詐騙及交易糾紛。
         </p>
-        <p className="text-gray-300 text-sm font-medium mb-5">
+        <p className="text-gray-300 text-sm font-medium">
           客服確認完成後，將提供您{order.payment_method === 'atm' ? 'ATM 轉帳帳號' : '超商繳費條碼'}進行付款。
         </p>
-        <a
-          href="https://line.me/R/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-[#06C755] hover:bg-[#05B34C] text-white font-bold px-6 py-3 rounded-xl transition-colors"
-        >
-          <MessageCircle className="w-5 h-5" />
-          聯繫客服
-        </a>
       </div>
 
       {/* Action Buttons */}
