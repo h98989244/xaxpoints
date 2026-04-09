@@ -46,9 +46,7 @@ export default function OrderDetail() {
     );
   }
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+  if (!user) return <Navigate to="/login" replace />;
 
   if (loading) {
     return (
@@ -67,12 +65,12 @@ export default function OrderDetail() {
     return (
       <div className="max-w-3xl mx-auto px-4 py-20 text-center">
         <p className="text-gray-400 text-lg mb-4">找不到此訂單</p>
-        <Link to="/orders" className="text-[#C9A84C] hover:text-[#E8D48B]">
-          返回訂單列表
-        </Link>
+        <Link to="/orders" className="text-[#C9A84C] hover:text-[#E8D48B]">返回訂單列表</Link>
       </div>
     );
   }
+
+  const st = order.payment_status;
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -93,10 +91,8 @@ export default function OrderDetail() {
               {new Date(order.created_at).toLocaleString('zh-TW')}
             </p>
           </div>
-          <span
-            className={`inline-flex self-start px-4 py-1.5 rounded-full text-sm font-medium border ${statusColor[order.status] || ''}`}
-          >
-            {statusLabel[order.status] || order.status}
+          <span className={`inline-flex self-start px-4 py-1.5 rounded-full text-sm font-medium border ${statusColor[st] || ''}`}>
+            {statusLabel[st] || st}
           </span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
@@ -119,13 +115,10 @@ export default function OrderDetail() {
       <div className="card p-6 mb-6">
         <h2 className="text-lg font-semibold text-white mb-4">訂單商品</h2>
         <div className="space-y-4">
-          {order.items.map((item) => (
-            <div key={item.id} className="flex justify-between items-center py-3 border-b border-[#C9A84C]/10 last:border-0">
+          {order.items.map((item, idx) => (
+            <div key={idx} className="flex justify-between items-center py-3 border-b border-[#C9A84C]/10 last:border-0">
               <div>
-                <span className="text-white">{item.product_name}</span>
-                <span className="text-gray-400 text-sm ml-2">
-                  (面額 NT${item.denomination.toLocaleString()})
-                </span>
+                <span className="text-white">{item.name}</span>
                 <span className="text-gray-400 text-sm ml-2">x{item.quantity}</span>
               </div>
               <span className="text-[#C9A84C] font-semibold">
@@ -152,7 +145,7 @@ export default function OrderDetail() {
               {order.payment_method === 'atm' ? 'ATM 轉帳' : '超商條碼繳費'}
             </span>
           </p>
-          {order.status === 'pending' && (
+          {st === 'pending' && (
             <div className="mt-3 p-4 bg-[#16213E] rounded-lg">
               {order.payment_method === 'atm' ? (
                 <div className="text-gray-300">
@@ -188,46 +181,28 @@ export default function OrderDetail() {
       </div>
 
       {/* Card Codes */}
-      {order.status === 'paid' && order.items.some((item) => item.card_codes && item.card_codes.length > 0) && (
-        <div className="card p-6">
+      {st === 'paid' && order.card_codes && order.card_codes.length > 0 && (
+        <div className="card p-6 mb-6">
           <h2 className="text-lg font-semibold text-white mb-4">點數卡序號</h2>
-          <div className="space-y-4">
-            {order.items.map(
-              (item) =>
-                item.card_codes &&
-                item.card_codes.length > 0 && (
-                  <div key={item.id}>
-                    <p className="text-gray-400 text-sm mb-2">{item.product_name}</p>
-                    <div className="space-y-2">
-                      {item.card_codes.map((code, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center justify-between bg-[#16213E] rounded-lg px-4 py-3"
-                        >
-                          <code className="text-[#C9A84C] font-mono">{code}</code>
-                          <button
-                            onClick={() => copyCode(code)}
-                            className="text-gray-400 hover:text-[#C9A84C] transition-colors p-1"
-                            title="複製"
-                          >
-                            {copiedCode === code ? (
-                              <Check className="w-4 h-4 text-green-400" />
-                            ) : (
-                              <Copy className="w-4 h-4" />
-                            )}
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ),
-            )}
+          <div className="space-y-2">
+            {order.card_codes.map((code, idx) => (
+              <div key={idx} className="flex items-center justify-between bg-[#16213E] rounded-lg px-4 py-3">
+                <code className="text-[#C9A84C] font-mono">{code}</code>
+                <button
+                  onClick={() => copyCode(code)}
+                  className="text-gray-400 hover:text-[#C9A84C] transition-colors p-1"
+                  title="複製"
+                >
+                  {copiedCode === code ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       )}
 
       {order.note && (
-        <div className="card p-6 mt-6">
+        <div className="card p-6">
           <h2 className="text-lg font-semibold text-white mb-2">備註</h2>
           <p className="text-gray-300 text-sm">{order.note}</p>
         </div>

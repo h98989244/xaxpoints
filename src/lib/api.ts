@@ -1,4 +1,5 @@
-import type { User, Product, Order, Stats } from './types';
+import type { User, Product, OrderRaw, Stats } from './types';
+import { parseOrder } from './types';
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
@@ -58,27 +59,39 @@ export const api = {
     request<{ message: string }>(`/products/${id}`, { method: 'DELETE' }),
 
   // Orders
-  createOrder: (data: {
+  createOrder: async (data: {
     buyer_name: string;
     buyer_email: string;
     buyer_phone: string;
     payment_method: string;
     note?: string;
     items: { product_id: string; name: string; quantity: number; price: number }[];
-  }) =>
-    request<{ order: Order }>('/orders', {
+  }) => {
+    const res = await request<{ order: OrderRaw }>('/orders', {
       method: 'POST',
       body: JSON.stringify(data),
-    }),
-  getOrders: () => request<{ orders: Order[] }>('/orders'),
-  getOrder: (id: string) => request<{ order: Order }>(`/orders/${id}`),
-  updateOrder: (id: string, data: Partial<Order> & { card_codes?: Record<string, string[]> }) =>
-    request<{ order: Order }>(`/orders/${id}`, {
+    });
+    return { order: parseOrder(res.order) };
+  },
+  getOrders: async () => {
+    const res = await request<{ orders: OrderRaw[]; pagination?: unknown }>('/orders');
+    return { orders: res.orders.map(parseOrder) };
+  },
+  getOrder: async (id: string) => {
+    const res = await request<{ order: OrderRaw }>(`/orders/${id}`);
+    return { order: parseOrder(res.order) };
+  },
+  updateOrder: async (id: string, data: Record<string, unknown>) => {
+    const res = await request<{ order: OrderRaw }>(`/orders/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
-    }),
-  trackOrder: (orderNumber: string) =>
-    request<{ order: Order }>(`/orders/track/${orderNumber}`),
+    });
+    return { order: parseOrder(res.order) };
+  },
+  trackOrder: async (orderNumber: string) => {
+    const res = await request<{ order: OrderRaw }>(`/orders/track/${orderNumber}`);
+    return { order: parseOrder(res.order) };
+  },
 
   // Admin
   getStats: () => request<Stats>('/admin/stats'),

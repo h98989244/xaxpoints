@@ -25,7 +25,7 @@ export default function AdminOrders() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [cardCodesInput, setCardCodesInput] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
-  const [showCodesModal, setShowCodesModal] = useState<string | null>(null);
+  const [showCodesModal, setShowCodesModal] = useState<string | null>(null); // order id
 
   const fetchOrders = () => {
     api
@@ -39,12 +39,16 @@ export default function AdminOrders() {
     fetchOrders();
   }, []);
 
-  const filtered = filter === 'all' ? orders : orders.filter((o) => o.status === filter);
+  const filtered =
+    filter === 'all' ? orders : orders.filter((o) => o.payment_status === filter);
 
   const markPaid = async (orderId: string) => {
     setActionLoading(true);
     try {
-      await api.updateOrder(orderId, { status: 'paid', paid_at: new Date().toISOString() });
+      await api.updateOrder(orderId, {
+        payment_status: 'paid',
+        paid_at: new Date().toISOString(),
+      });
       fetchOrders();
     } catch {
       // ignore
@@ -55,7 +59,7 @@ export default function AdminOrders() {
   const cancelOrder = async (orderId: string) => {
     setActionLoading(true);
     try {
-      await api.updateOrder(orderId, { status: 'cancelled' });
+      await api.updateOrder(orderId, { payment_status: 'cancelled' });
       fetchOrders();
     } catch {
       // ignore
@@ -63,7 +67,7 @@ export default function AdminOrders() {
     setActionLoading(false);
   };
 
-  const submitCardCodes = async (orderId: string, itemId: string) => {
+  const submitCardCodes = async (orderId: string) => {
     if (!cardCodesInput.trim()) return;
     setActionLoading(true);
     const codes = cardCodesInput
@@ -71,7 +75,7 @@ export default function AdminOrders() {
       .map((c) => c.trim())
       .filter(Boolean);
     try {
-      await api.updateOrder(orderId, { card_codes: { [itemId]: codes } });
+      await api.updateOrder(orderId, { card_codes: JSON.stringify(codes) });
       setShowCodesModal(null);
       setCardCodesInput('');
       fetchOrders();
@@ -112,6 +116,7 @@ export default function AdminOrders() {
         <div className="space-y-3">
           {filtered.map((order) => {
             const expanded = expandedId === order.id;
+            const st = order.payment_status;
             return (
               <div key={order.id} className="card overflow-hidden">
                 <button
@@ -120,8 +125,10 @@ export default function AdminOrders() {
                 >
                   <div className="flex items-center gap-4 flex-wrap">
                     <span className="text-white font-semibold">#{order.order_number}</span>
-                    <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${statusColor[order.status] || ''}`}>
-                      {statusLabel[order.status] || order.status}
+                    <span
+                      className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${statusColor[st] || ''}`}
+                    >
+                      {statusLabel[st] || st}
                     </span>
                     <span className="text-gray-400 text-sm">
                       {new Date(order.created_at).toLocaleDateString('zh-TW')}
@@ -160,51 +167,52 @@ export default function AdminOrders() {
 
                     {/* Items */}
                     <div>
-                      <h4 className="text-gray-400 text-sm font-medium mb-2">商品明細</h4>
-                      {order.items.map((item) => (
+                      <h4 className="text-gray-400 text-sm font-medium mb-2">商品���細</h4>
+                      {order.items.map((item, idx) => (
                         <div
-                          key={item.id}
+                          key={idx}
                           className="flex items-center justify-between py-2 border-b border-[#C9A84C]/5 last:border-0 text-sm"
                         >
                           <div className="flex items-center gap-3">
-                            <span className="text-white">{item.product_name}</span>
+                            <span className="text-white">{item.name}</span>
                             <span className="text-gray-400">x{item.quantity}</span>
                           </div>
-                          <div className="flex items-center gap-3">
-                            <span className="text-[#C9A84C]">
-                              NT${(item.price * item.quantity).toLocaleString()}
-                            </span>
-                            {order.status === 'paid' && (
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setShowCodesModal(item.id);
-                                  setCardCodesInput(
-                                    item.card_codes ? item.card_codes.join('\n') : '',
-                                  );
-                                }}
-                                className="text-xs text-[#C9A84C] hover:text-[#E8D48B] border border-[#C9A84C]/30 px-2 py-1 rounded"
-                              >
-                                {item.card_codes && item.card_codes.length > 0
-                                  ? `序號 (${item.card_codes.length})`
-                                  : '輸入序號'}
-                              </button>
-                            )}
-                          </div>
+                          <span className="text-[#C9A84C]">
+                            NT${(item.price * item.quantity).toLocaleString()}
+                          </span>
                         </div>
                       ))}
                     </div>
 
+                    {/* Card Codes Display */}
+                    {order.card_codes && order.card_codes.length > 0 && (
+                      <div>
+                        <h4 className="text-gray-400 text-sm font-medium mb-2">
+                          已填入序號 ({order.card_codes.length})
+                        </h4>
+                        <div className="space-y-1">
+                          {order.card_codes.map((code, idx) => (
+                            <div
+                              key={idx}
+                              className="bg-[#16213E] px-3 py-2 rounded text-sm font-mono text-[#C9A84C]"
+                            >
+                              {code}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     {order.note && (
                       <div className="text-sm">
-                        <span className="text-gray-400">備註：</span>
+                        <span className="text-gray-400">���註：</span>
                         <span className="text-gray-300 ml-1">{order.note}</span>
                       </div>
                     )}
 
                     {/* Actions */}
-                    <div className="flex gap-3 pt-2">
-                      {order.status === 'pending' && (
+                    <div className="flex gap-3 pt-2 flex-wrap">
+                      {st === 'pending' && (
                         <>
                           <button
                             onClick={() => markPaid(order.id)}
@@ -222,6 +230,21 @@ export default function AdminOrders() {
                           </button>
                         </>
                       )}
+                      {st === 'paid' && (
+                        <button
+                          onClick={() => {
+                            setShowCodesModal(order.id);
+                            setCardCodesInput(
+                              order.card_codes ? order.card_codes.join('\n') : '',
+                            );
+                          }}
+                          className="text-sm text-[#C9A84C] hover:text-[#E8D48B] border border-[#C9A84C]/30 px-4 py-2 rounded-lg"
+                        >
+                          {order.card_codes && order.card_codes.length > 0
+                            ? '編輯序號'
+                            : '輸入序號'}
+                        </button>
+                      )}
                     </div>
                   </div>
                 )}
@@ -230,13 +253,16 @@ export default function AdminOrders() {
           })}
         </div>
       ) : (
-        <div className="text-center py-20 text-gray-400">沒有符合條件的訂單</div>
+        <div className="text-center py-20 text-gray-400">��有符合條件的訂單</div>
       )}
 
       {/* Card Codes Modal */}
       {showCodesModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setShowCodesModal(null)} />
+          <div
+            className="absolute inset-0 bg-black/60"
+            onClick={() => setShowCodesModal(null)}
+          />
           <div className="relative bg-[#1E2A3A] border border-[#C9A84C]/20 rounded-xl w-full max-w-md p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-white">輸入點數卡序號</h3>
@@ -253,22 +279,19 @@ export default function AdminOrders() {
               onChange={(e) => setCardCodesInput(e.target.value)}
               rows={6}
               className="w-full bg-[#16213E] border border-[#C9A84C]/20 rounded-lg px-4 py-3 text-white font-mono text-sm focus:outline-none focus:border-[#C9A84C] transition-colors resize-none mb-4"
-              placeholder="XXXX-XXXX-XXXX&#10;YYYY-YYYY-YYYY"
+              placeholder={"XXXX-XXXX-XXXX\nYYYY-YYYY-YYYY"}
             />
             <div className="flex gap-3">
               <button
                 onClick={() => setShowCodesModal(null)}
                 className="flex-1 border border-[#C9A84C]/30 text-gray-300 hover:bg-[#253448] py-2.5 rounded-lg transition-colors"
               >
-                取消
+                取���
               </button>
               <button
                 onClick={() => {
-                  const order = orders.find((o) =>
-                    o.items.some((i) => i.id === showCodesModal),
-                  );
-                  if (order && showCodesModal) {
-                    submitCardCodes(order.id, showCodesModal);
+                  if (showCodesModal) {
+                    submitCardCodes(showCodesModal);
                   }
                 }}
                 disabled={actionLoading}

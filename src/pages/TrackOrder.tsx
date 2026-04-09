@@ -85,9 +85,9 @@ export default function TrackOrder() {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-white">#{order.order_number}</h2>
             <span
-              className={`px-4 py-1.5 rounded-full text-sm font-medium border ${statusColor[order.status] || ''}`}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium border ${statusColor[order.payment_status] || ''}`}
             >
-              {statusLabel[order.status] || order.status}
+              {statusLabel[order.payment_status] || order.payment_status}
             </span>
           </div>
 
@@ -125,9 +125,9 @@ export default function TrackOrder() {
               <h3 className="text-sm font-medium text-gray-400 mb-3">訂單商品</h3>
               <div className="space-y-2">
                 {order.items.map((item) => (
-                  <div key={item.id} className="flex justify-between text-sm">
+                  <div key={item.product_id} className="flex justify-between text-sm">
                     <span className="text-gray-300">
-                      {item.product_name} x{item.quantity}
+                      {item.name} x{item.quantity}
                     </span>
                     <span className="text-white">
                       NT${(item.price * item.quantity).toLocaleString()}

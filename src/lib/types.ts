@@ -20,32 +20,64 @@ export interface Product {
   updated_at: string;
 }
 
+// Items stored as JSON string in DB
 export interface OrderItem {
-  id: string;
-  order_id: string;
   product_id: string;
-  product_name: string;
-  denomination: number;
-  price: number;
+  name: string;
   quantity: number;
-  card_codes: string[] | null;
+  price: number;
 }
 
+// Raw order from API (items/card_codes are JSON strings)
+export interface OrderRaw {
+  id: string;
+  order_number: string;
+  user_id: string;
+  items: string; // JSON string of OrderItem[]
+  total_amount: number;
+  payment_method: 'atm' | 'convenience_store';
+  payment_status: 'pending' | 'paid' | 'cancelled';
+  card_codes: string | null; // JSON string
+  buyer_name: string | null;
+  buyer_email: string | null;
+  buyer_phone: string | null;
+  note: string | null;
+  created_at: string;
+  paid_at: string | null;
+}
+
+// Parsed order for frontend use
 export interface Order {
   id: string;
   order_number: string;
   user_id: string;
-  buyer_name: string;
-  buyer_email: string;
-  buyer_phone: string;
-  payment_method: 'atm' | 'convenience_store';
-  total_amount: number;
-  status: 'pending' | 'paid' | 'cancelled';
-  note: string | null;
-  paid_at: string | null;
-  created_at: string;
-  updated_at: string;
   items: OrderItem[];
+  total_amount: number;
+  payment_method: 'atm' | 'convenience_store';
+  payment_status: 'pending' | 'paid' | 'cancelled';
+  card_codes: string[] | null;
+  buyer_name: string | null;
+  buyer_email: string | null;
+  buyer_phone: string | null;
+  note: string | null;
+  created_at: string;
+  paid_at: string | null;
+}
+
+export function parseOrder(raw: OrderRaw): Order {
+  let items: OrderItem[] = [];
+  try {
+    items = typeof raw.items === 'string' ? JSON.parse(raw.items) : raw.items;
+  } catch { items = []; }
+
+  let card_codes: string[] | null = null;
+  try {
+    if (raw.card_codes) {
+      card_codes = typeof raw.card_codes === 'string' ? JSON.parse(raw.card_codes) : raw.card_codes;
+    }
+  } catch { card_codes = null; }
+
+  return { ...raw, items, card_codes };
 }
 
 export interface CartItem {

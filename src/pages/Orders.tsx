@@ -72,9 +72,9 @@ export default function Orders() {
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-white font-semibold">#{order.order_number}</span>
                     <span
-                      className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${statusColor[order.status] || ''}`}
+                      className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${statusColor[order.payment_status] || ''}`}
                     >
-                      {statusLabel[order.status] || order.status}
+                      {statusLabel[order.payment_status] || order.payment_status}
                     </span>
                   </div>
                   <div className="text-gray-400 text-sm space-x-4">
