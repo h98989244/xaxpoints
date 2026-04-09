@@ -1,7 +1,7 @@
 name = "zuohe-points-api"
 main = "src/index.ts"
 compatibility_date = "2024-12-01"
-account_id = "7183938e807f105a7e7628693729280b"
+account_id = "a07875812cf0f78a5d637060a5a7956b"
 
 [vars]
 JWT_SECRET = "zuohe-points-secret-key-change-in-production"
@@ -9,4 +9,4 @@ JWT_SECRET = "zuohe-points-secret-key-change-in-production"
 [[d1_databases]]
 binding = "DB"
 database_name = "zuohe-points-db"
-database_id = "013c4e41-fc00-4fe0-95d0-b301bd1c8d66"
+database_id = "4b4ce129-6e96-4642-b5fb-f303cdebeca0"
