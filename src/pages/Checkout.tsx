@@ -57,7 +57,9 @@ export default function Checkout() {
         note: note || undefined,
         items: items.map((item) => ({
           product_id: item.product.id,
+          name: item.product.name,
           quantity: item.quantity,
+          price: item.product.price,
         })),
       });
       clearCart();

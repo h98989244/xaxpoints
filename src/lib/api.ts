@@ -59,7 +59,7 @@ export const api = {
     buyer_phone: string;
     payment_method: string;
     note?: string;
-    items: { product_id: string; quantity: number }[];
+    items: { product_id: string; name: string; quantity: number; price: number }[];
   }) =>
     request<{ order: Order }>('/orders', {
       method: 'POST',
