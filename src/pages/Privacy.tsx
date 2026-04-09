@@ -1,6 +1,8 @@
 import { ShieldCheck } from 'lucide-react';
+import { useSettings } from '../contexts/SettingsContext';
 
 export default function Privacy() {
+  const { settings } = useSettings();
   return (
     <div className="min-h-screen py-12 px-4">
       <div className="max-w-4xl mx-auto">
@@ -11,7 +13,7 @@ export default function Privacy() {
             <span className="text-[#C9A84C] text-sm font-medium">隱私權政策</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white mb-3">隱私權政策</h1>
-          <p className="text-gray-500 text-sm">最後更新日期：2024 年 12 月 1 日</p>
+          <p className="text-gray-500 text-sm">最後更新日期：2026 年 1 月 1 日</p>
         </div>
 
         {/* Content */}
@@ -105,9 +107,9 @@ export default function Privacy() {
               title: '十、聯絡方式',
               content: [
                 '如您對本隱私權政策有任何疑問或建議，歡迎透過以下方式聯繫我們：',
-                '• 電子郵件：support@zuohe.com',
-                '• 客服電話：02-1234-5678',
-                '• 服務時間：週一至週五 09:00 - 18:00',
+                `• 電子郵件：${settings.email || '請至聯絡我們頁面查詢'}`,
+                `• 客服電話：${settings.phone || '請至聯絡我們頁面查詢'}`,
+                `• 服務時間：${settings.service_hours || '請至聯絡我們頁面查詢'}`,
               ],
             },
           ].map((section, i) => (

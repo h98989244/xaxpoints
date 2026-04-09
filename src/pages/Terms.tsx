@@ -11,7 +11,7 @@ export default function Terms() {
             <span className="text-[#C9A84C] text-sm font-medium">服務條款</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white mb-3">服務條款</h1>
-          <p className="text-gray-500 text-sm">最後更新日期：2024 年 12 月 1 日</p>
+          <p className="text-gray-500 text-sm">最後更新日期：2026 年 1 月 1 日</p>
         </div>
 
         {/* Content */}
