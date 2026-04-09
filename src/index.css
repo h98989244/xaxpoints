@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #C9A84C;
+  --color-gold-light: #E8D48B;
+  --color-gold-dark: #A68A3E;
+  --color-dark: #1A1A2E;
+  --color-dark-2: #16213E;
+  --color-card: #1E2A3A;
+  --color-card-hover: #253448;
+  --font-family-sans: 'Noto Sans TC', sans-serif;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+  color: #E5E7EB;
+  min-height: 100vh;
+}
+
+/* Gold gradient button */
+.btn-gold {
+  background: linear-gradient(135deg, #C9A84C 0%, #E8D48B 50%, #C9A84C 100%);
+  color: #1A1A2E;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+.btn-gold:hover {
+  background: linear-gradient(135deg, #E8D48B 0%, #C9A84C 50%, #E8D48B 100%);
+  box-shadow: 0 0 20px rgba(201, 168, 76, 0.4);
+}
+
+/* Card style */
+.card {
+  background: #1E2A3A;
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+.card:hover {
+  border-color: rgba(201, 168, 76, 0.4);
+  box-shadow: 0 4px 20px rgba(201, 168, 76, 0.1);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1A1A2E; }
+::-webkit-scrollbar-thumb { background: #C9A84C; border-radius: 3px; }
