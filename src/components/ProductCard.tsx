@@ -23,7 +23,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <img
             src={product.image_url}
             alt={product.name}
-            className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-48 object-contain bg-white rounded-t-xl p-2 group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
           <div className="w-full h-48 bg-gradient-to-br from-[#C9A84C] to-[#A68A3E] flex items-center justify-center group-hover:from-[#E8D48B] group-hover:to-[#C9A84C] transition-all duration-300">

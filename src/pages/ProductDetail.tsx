@@ -79,7 +79,7 @@ export default function ProductDetail() {
             <img
               src={product.image_url}
               alt={product.name}
-              className="w-full h-80 object-cover rounded-xl"
+              className="w-full h-80 object-contain bg-white rounded-xl p-4"
             />
           ) : (
             <div className="w-full h-80 bg-gradient-to-br from-[#C9A84C] to-[#A68A3E] rounded-xl flex items-center justify-center">
