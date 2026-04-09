@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
-import { ArrowLeft, Copy, Check } from 'lucide-react';
+import { ArrowLeft, Copy, Check, CheckCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../lib/api';
 import type { Order } from '../lib/types';
@@ -146,30 +146,17 @@ export default function OrderDetail() {
             </span>
           </p>
           {st === 'pending' && (
-            <div className="mt-3 p-4 bg-[#16213E] rounded-lg">
-              {order.payment_method === 'atm' ? (
-                <div className="text-gray-300">
-                  <p className="font-medium text-[#C9A84C] mb-2">請轉帳至以下帳號：</p>
-                  <p>銀行：佐和銀行 (888)</p>
-                  <p>帳號：1234-5678-9012-3456</p>
-                  <p className="mt-2 text-yellow-400 text-xs">
-                    請於 24 小時內完成付款，逾時訂單將自動取消。
-                  </p>
-                </div>
-              ) : (
-                <div className="text-gray-300">
-                  <p className="font-medium text-[#C9A84C] mb-2">超商繳費條碼</p>
-                  <p>請至超商出示下列條碼進行繳費。</p>
-                  <div className="mt-3 flex gap-2">
-                    <div className="flex-1 bg-white text-black text-center py-3 rounded font-mono text-sm">
-                      {order.order_number}
-                    </div>
-                  </div>
-                  <p className="mt-2 text-yellow-400 text-xs">
-                    請於 48 小時內完成繳費，逾時訂單將自動取消。
-                  </p>
-                </div>
-              )}
+            <div className="mt-4 p-5 bg-gradient-to-b from-[#16213E] to-[#1A2535] rounded-xl border border-[#C9A84C]/10 text-center">
+              <div className="w-10 h-10 bg-[#C9A84C]/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                <CheckCircle className="w-5 h-5 text-[#C9A84C]" />
+              </div>
+              <h3 className="text-base font-bold text-white mb-2">人工客服確認流程</h3>
+              <p className="text-gray-400 text-sm leading-relaxed mb-3">
+                因本公司銷售點數卡產品為消耗性商品，本平台為預防詐騙，於成功下單後，會轉由人工客服進行確認進行 KYC，並確認購買商品相關性問題，確保詐騙及交易糾紛。
+              </p>
+              <p className="text-gray-300 text-sm font-medium">
+                客服確認完成後，將提供您{order.payment_method === 'atm' ? 'ATM 轉帳帳號' : '超商繳費條碼'}進行付款。
+              </p>
             </div>
           )}
           {order.paid_at && (
